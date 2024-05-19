@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/secure-vault-logo-full-3x.png" alt="secure vault brand" width="500"/>
+  <img src="./assets/secure-vault-logo-3x.png" alt="secure vault brand" width="400"/>
 </p>
 
 <h1 align="center">SECURE VAULT - THE ONLY KEY IS YOU</h1>
@@ -53,7 +53,7 @@ We encourage you to contribute to Secure Vault's development!
 
 * **Report issues:** Find a bug or have a suggestion. Please submit an issue on GitHub.
 * **Submit pull requests:**  Want to add a feature or fix a bug? Submit a pull request to our repository.
-* **Join the community:**  Connect with other developers and users on our [community forum/Discord server] (link).
+* **Join the community:**  Connect with other developers.
 
 **Before contributing:**
 
