@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+  <img src="./assets/secure-vault-logo-full-3x.png" alt="secure vault brand" width="500"/>
+</p>
 
-## Getting Started
+<h1 align="center">SECURE VAULT - THE ONLY KEY IS YOU</h1>
 
-First, run the development server:
+<br>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Secure Vault** is a privacy-focused application designed to safeguard your passwords, documents, and other confidential information. It's built with end-to-end encryption, ensuring that only you have access to your data. We never have access to your passwords or sensitive information. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚗️ Key Features:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+* **End-to-End Encryption:** Your data is encrypted on your device and remains encrypted on our servers, ensuring only you can access it.  
+* **Master Password Security:** Your master password is the only key to unlocking your vault. 
+* **Secure Storage:** Keep all your valuable data safe and organized in one place.
+* **Secure Sharing:**  Share your information securely with trusted individuals. 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Why Choose Secure Vault?
 
-## Learn More
+* **Ultimate Privacy:** Your data is your business. We don't have access to it.
+* **Peace of Mind:** Securely store and manage your most important information.
+* **Easy to Use:**  A user-friendly interface makes it simple to manage your vault.
+* **Open Source:**  We welcome community contributions to make Secure Vault even better.
 
-To learn more about Next.js, take a look at the following resources:
+## Getting Started:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Download the code:** 
+   ```bash
+   # Clone this repository to your local machine.
+   git clone https://github.com/puneetkakkar/secure-vault-web
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. **Navigate to the project directory:**
+    ```bash
+    # Navigate to the required project\'s folder
+    cd secure-vault-web
 
-## Deploy on Vercel
+3. **Install dependencies:**
+    ```bash
+    # Install required packages
+    yarn install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Running the Application
+
+1. **Start the application:**
+    ```bash
+    # Run the application\'s web server.
+    yarn dev
+
+## Contributing
+
+We encourage you to contribute to Secure Vault's development!
+
+* **Report issues:** Find a bug or have a suggestion. Please submit an issue on GitHub.
+* **Submit pull requests:**  Want to add a feature or fix a bug? Submit a pull request to our repository.
+* **Join the community:**  Connect with other developers and users on our [community forum/Discord server] (link).
+
+**Before contributing:**
+
+* Please read our [Contributing Guidelines](CONTRIBUTING.md) for a detailed guide.
+* Ensure you have signed our Contributor License Agreement (CLA). 
+
+## License
+
+This project is licensed under the [License Name] License - see the [LICENSE](LICENSE) file for details.
+
+**Together, let's make Secure Vault the ultimate solution for protecting your digital secrets!**
