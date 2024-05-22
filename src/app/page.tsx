@@ -1,51 +1,35 @@
-import { GithubIcon } from "@/app/components/icons";
 import { subtitle, title } from "@/app/components/primitives";
-import { Code } from "@nextui-org/code";
-import { Link } from "@nextui-org/link";
-import { Snippet } from "@nextui-org/snippet";
-import { button as buttonStyles } from "@nextui-org/theme";
+import Image from "next/image";
+import HackerImage from "../../assets/homepage-hacker.svg";
 
 export default function Home() {
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <div className="inline-block max-w-lg text-center justify-center">
-        <h1 className={title()}>Make&nbsp;</h1>
-        <h1 className={title({ color: "violet" })}>beautiful&nbsp;</h1>
-        <br />
-        <h1 className={title()}>
-          websites regardless of your design experience.
+    <section className="flex flex-row justify-center gap-4 py-8 md:py-10">
+      <div className="inline-block items-center justify-center max-w-lg">
+        <h1 className="text-5xl py-12 font-semibold ">Data Protection?</h1>
+        <h1 className={title({ size: "sm", class: "font-medium" })}>
+          Keep your secrets safe with{" "}
+          <span className="font-semibold">SECRET&nbsp;</span>
         </h1>
-        <h2 className={subtitle({ class: "mt-4" })}>
-          Beautiful, fast and modern React UI library.
-        </h2>
-      </div>
-
-      <div className="flex gap-3">
-        <Link
-          isExternal
-          className={buttonStyles({
-            color: "primary",
-            radius: "full",
-            variant: "shadow",
+        <h1
+          className={title({
+            color: "purple",
+            class: "bg-gradient-to-tl",
+            size: "sm",
           })}
         >
-          Documentation
-        </Link>
-        <Link
-          isExternal
-          className={buttonStyles({ variant: "bordered", radius: "full" })}
-        >
-          <GithubIcon size={20} />
-          GitHub
-        </Link>
+          VAULT,&nbsp;
+        </h1>
+        <br />
+        <h1 className={title({ size: "sm", class: "font-medium" })}>
+          the end-to-end encrypted password manager that puts you in control.
+        </h1>
+        <h2 className={subtitle({ class: "mt-4" })}>
+          Never remember your passwords again.
+        </h2>
       </div>
-
-      <div className="mt-8">
-        <Snippet hideSymbol hideCopyButton variant="flat">
-          <span>
-            Get started by editing <Code color="primary">app/page.tsx</Code>
-          </span>
-        </Snippet>
+      <div className="">
+        <Image src={HackerImage} alt="hacker" />
       </div>
     </section>
   );

@@ -5,6 +5,7 @@ export const title = tv({
   variants: {
     color: {
       violet: "from-[#FF1CF7] to-[#b249f8]",
+      purple: "from-[#8C52FF] to-[#5E17EB]",
       yellow: "from-[#FF705B] to-[#FFB457]",
       blue: "from-[#5EA2EF] to-[#0072F5]",
       cyan: "from-[#00b7fa] to-[#01cfea]",
@@ -28,6 +29,7 @@ export const title = tv({
     {
       color: [
         "violet",
+        "purple",
         "yellow",
         "blue",
         "cyan",
