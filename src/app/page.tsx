@@ -1,6 +1,5 @@
 import { GithubIcon } from "@/app/components/icons";
 import { subtitle, title } from "@/app/components/primitives";
-import { siteConfig } from "@/app/config/site";
 import { Code } from "@nextui-org/code";
 import { Link } from "@nextui-org/link";
 import { Snippet } from "@nextui-org/snippet";
@@ -24,7 +23,6 @@ export default function Home() {
       <div className="flex gap-3">
         <Link
           isExternal
-          href={siteConfig.links.docs}
           className={buttonStyles({
             color: "primary",
             radius: "full",
@@ -36,7 +34,6 @@ export default function Home() {
         <Link
           isExternal
           className={buttonStyles({ variant: "bordered", radius: "full" })}
-          href={siteConfig.links.github}
         >
           <GithubIcon size={20} />
           GitHub
