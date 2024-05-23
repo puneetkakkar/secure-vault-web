@@ -9,7 +9,11 @@ const config: Config = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        josefin: ["Josefin Sans", "sans-serif"],
+      },
+    },
   },
   darkMode: "class",
   plugins: [
@@ -28,7 +32,7 @@ const config: Config = {
         },
         dark: {
           colors: {
-            background: "#000000",
+            background: "#0E001F",
             foreground: "#FFFFFF",
             primary: {
               DEFAULT: "#FFFFFF",

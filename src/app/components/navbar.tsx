@@ -17,8 +17,7 @@ import clsx from "clsx";
 import NextLink from "next/link";
 
 import { ThemeSwitch } from "@/app/components/theme-switch";
-
-import { Logo } from "@/app/components/icons";
+import { Logo } from "./icons";
 
 export const Navbar = () => {
   return (
@@ -27,12 +26,12 @@ export const Navbar = () => {
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-1" href="/">
             <Logo />
-            <p className="font-bold text-inherit">
-              SECRET &nbsp;
-              <span className="bg-gradient-to-tl from-[#8C52FF] to-[#5E17EB] text-transparent bg-clip-text">
+            <span className="font-josefin mt-2 font-bold md:mt-1">
+              SECRET&nbsp;
+              <span className="font-josefin bg-gradient-to-tl from-[#8C52FF] to-[#5E17EB] text-transparent bg-clip-text">
                 VAULT
               </span>
-            </p>
+            </span>
           </NextLink>
         </NavbarBrand>
         <ul className="hidden sm:flex gap-4 justify-start ml-2">
@@ -41,7 +40,7 @@ export const Navbar = () => {
               <NextLink
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium"
+                  "data-[active=true]:text-primary data-[active=true]:font-medium font-josefin"
                 )}
                 color="foreground"
                 href={item.href}
@@ -63,7 +62,7 @@ export const Navbar = () => {
         <NavbarItem className="hidden md:flex">
           <Button
             as={Link}
-            className="text-sm font-normal text-primary-foreground bg-primary"
+            className="text-sm font-josefin font-normal text-primary-foreground bg-primary"
             variant="flat"
           >
             Login
