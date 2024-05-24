@@ -1,7 +1,7 @@
-import { IconSvgProps } from "@/app/types";
+import SecretVaultLogo from "@/../assets/secret-vault-logo.svg";
+import { IconSvgProps } from "@/types";
 import Image from "next/image";
 import * as React from "react";
-import SecretVaultLogo from "../../../assets/secret-vault-logo.svg";
 
 export const Logo: React.FC<IconSvgProps> = ({ size = 26 }) => (
   <Image

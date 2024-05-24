@@ -12,11 +12,11 @@ import {
 
 import { link as linkStyles } from "@nextui-org/theme";
 
-import { siteConfig } from "@/app/config/site";
+import { siteConfig } from "@/config/site";
 import clsx from "clsx";
 import NextLink from "next/link";
 
-import { ThemeSwitch } from "@/app/components/theme-switch";
+import { ThemeSwitch } from "@/components/theme-switch";
 import { Logo } from "./icons";
 
 export const Navbar = () => {
@@ -40,7 +40,7 @@ export const Navbar = () => {
               <NextLink
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium font-josefin",
+                  "data-[active=true]:text-primary data-[active=true]:font-medium font-josefin"
                 )}
                 color="foreground"
                 href={item.href}
@@ -61,11 +61,20 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Button
-            as={Link}
-            className="text-sm font-josefin font-normal text-primary-foreground bg-primary"
+            color="primary"
             variant="flat"
+            className="font-normal font-josefin"
           >
             Login
+          </Button>
+        </NavbarItem>
+        <NavbarItem className="hidden md:flex">
+          <Button
+            as={Link}
+            className="font-josefin font-normal text-primary-foreground bg-primary"
+            variant="flat"
+          >
+            Sign up
           </Button>
         </NavbarItem>
       </NavbarContent>

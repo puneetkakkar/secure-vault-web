@@ -1,4 +1,4 @@
-import { subtitle, title } from "@/app/components/primitives";
+import { subtitle, title } from "@/components/primitives";
 import Image from "next/image";
 import HackerImage from "../../assets/homepage-hacker.svg";
 

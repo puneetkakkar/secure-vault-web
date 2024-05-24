@@ -1,9 +1,9 @@
-import "@/app/styles/globals.css";
+import "@/styles/globals.css";
 import { Link } from "@nextui-org/react";
 import clsx from "clsx";
 import type { Metadata } from "next";
-import { Navbar } from "./components/navbar";
-import { siteConfig } from "./config/site";
+import { Navbar } from "@/components/navbar";
+import { siteConfig } from "../config/site";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
