@@ -16,8 +16,8 @@ export const siteConfig = {
   ],
   nonAuthNavMenuItems: [
     {
-      label: "Join us",
-      href: "/register",
+      label: "Sign up",
+      href: "/signup",
     },
     {
       label: "Login",

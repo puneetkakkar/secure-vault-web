@@ -1,3 +1,7 @@
+"use client";
+
+import { ThemeSwitch } from "@/components/theme-switch";
+import { siteConfig } from "@/config/site";
 import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
 import {
@@ -9,17 +13,17 @@ import {
   NavbarMenuToggle,
   Navbar as NextUINavbar,
 } from "@nextui-org/navbar";
-
 import { link as linkStyles } from "@nextui-org/theme";
-
-import { siteConfig } from "@/config/site";
 import clsx from "clsx";
 import NextLink from "next/link";
-
-import { ThemeSwitch } from "@/components/theme-switch";
+import { usePathname } from "next/navigation";
 import { Logo } from "./icons";
 
 export const Navbar = () => {
+  const pathname = usePathname();
+  const showAuthButtons =
+    pathname === "/signup" || pathname === "/login" ? false : true;
+
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -59,24 +63,31 @@ export const Navbar = () => {
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
         </NavbarItem>
-        <NavbarItem className="hidden md:flex">
-          <Button
-            color="primary"
-            variant="flat"
-            className="font-normal font-josefin"
-          >
-            Login
-          </Button>
-        </NavbarItem>
-        <NavbarItem className="hidden md:flex">
-          <Button
-            as={Link}
-            className="font-josefin font-normal text-primary-foreground bg-primary"
-            variant="flat"
-          >
-            Sign up
-          </Button>
-        </NavbarItem>
+        {showAuthButtons ? (
+          <>
+            <NavbarItem className="hidden md:flex">
+              <Button
+                as={NextLink}
+                href="/login"
+                color="primary"
+                variant="flat"
+                className="font-normal font-josefin"
+              >
+                Login
+              </Button>
+            </NavbarItem>
+            <NavbarItem className="hidden md:flex">
+              <Button
+                as={NextLink}
+                href="/signup"
+                className="font-josefin font-normal text-primary-foreground bg-primary"
+                variant="flat"
+              >
+                Sign up
+              </Button>
+            </NavbarItem>
+          </>
+        ) : null}
       </NavbarContent>
 
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">

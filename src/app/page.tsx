@@ -31,7 +31,7 @@ export default function Home() {
         </h2>
       </div>
       <div className="">
-        <Image src={HackerImage} alt="hacker" />
+        <Image src={HackerImage} alt="hacker" priority />
       </div>
     </section>
   );
