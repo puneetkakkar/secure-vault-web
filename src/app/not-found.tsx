@@ -15,13 +15,13 @@ export default function NotFound() {
           width={550}
         />
       </div>
-      <p className="font-josefin text-3xl">Could not find requested resource</p>
+      <p className="font-josefin text-xl sm:text-3xl">Could not find requested resource</p>
       <Link
         href="/"
         className={clsx(
           linkStyles({
             color: "foreground",
-            className: "font-josefin text-xl text-primary-foreground mt-4",
+            className: "font-josefin text-md sm:text-xl text-primary-foreground mt-4",
           }),
           "data-[active=true]:text-primary data-[active=true]:font-medium"
         )}

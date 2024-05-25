@@ -14,6 +14,7 @@ interface IFormInput {
   masterPassword: string;
   confirmMasterPassword: string;
   masterPasswordHint: string;
+  isAgreed: boolean;
 }
 
 export default function Signup() {
@@ -32,10 +33,10 @@ export default function Signup() {
   };
 
   return (
-    <section className="flex flex-col sm:flex-row justify-between gap-4 py-8 md:py-10">
-      <div className="flex-1 relative px-14 py-10 mr-24 border rounded-3xl border-primary-100">
+    <section className="flex flex-col sm:flex-row justify-between gap-4 sm:py-8 md:py-10">
+      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 sm:mr-24 border rounded-3xl border-primary-100">
         <h2 className="absolute flex -top-0.5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <span className="bg-background px-4 text-3xl font-semibold uppercase">
+          <span className="bg-background px-4 text-lg sm:text-3xl font-semibold uppercase">
             Sign Up
           </span>
         </h2>
@@ -54,7 +55,6 @@ export default function Signup() {
               />
             )}
           />
-
           <Controller
             name="fullName"
             control={control}
@@ -69,7 +69,6 @@ export default function Signup() {
               />
             )}
           />
-
           <div className="flex flex-row justify-between w-">
             <Controller
               name="masterPassword"
@@ -91,7 +90,7 @@ export default function Signup() {
               control={control}
               render={({ field }) => (
                 <TextInput
-                  label="Confirm Master Password"
+                  label="Confirm Password"
                   type="password"
                   labelPlacement="inside"
                   errorMessage={errors.confirmMasterPassword?.message}
@@ -102,7 +101,6 @@ export default function Signup() {
               )}
             />
           </div>
-
           <Controller
             name="masterPasswordHint"
             control={control}
@@ -117,16 +115,30 @@ export default function Signup() {
               />
             )}
           />
-
-          <Checkbox color="primary">I agree to the Terms & Conditions</Checkbox>
-
+          <Controller
+            name="isAgreed"
+            control={control}
+            render={({ field: { onChange } }) => (
+              <Checkbox color="primary" onChange={onChange}>
+                <span className="text-sm sm:text-[1rem]">
+                  I agree to the terms and conditions.
+                </span>
+              </Checkbox>
+            )}
+          />
+          {errors.isAgreed?.message && (
+            <p className="text-danger text-xs">{errors.isAgreed.message}</p>
+          )}
           <div className="flex flex-col items-start justify-center my-4">
-            <Button type="submit" color="primary" className="w-6/12">
+            <Button
+              type="submit"
+              color="primary"
+              className="w-6/12 h-10 sm:h-11 text-sm sm:text-md"
+            >
               Sign Up
             </Button>
           </div>
-
-          <div className="mt-4">
+          <div className="mt-4 text-sm sm:text-[1rem]">
             Already have an account?{" "}
             <a href="/login" className="text-primary font-medium">
               Log In

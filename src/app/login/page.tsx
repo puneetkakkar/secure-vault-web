@@ -29,10 +29,10 @@ export default function Login() {
   };
 
   return (
-    <section className="flex flex-col sm:flex-row justify-between gap-4 py-8 md:py-10">
-      <div className="flex-1 relative px-14 py-10 mr-24 border rounded-3xl border-primary-100 max-h-96">
+    <section className="flex flex-col sm:flex-row justify-between gap-4 sm:py-8 md:py-10">
+      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 sm:mr-24 border rounded-3xl border-primary-100">
         <h2 className="absolute flex -top-0.5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <span className="bg-background px-4 text-3xl font-semibold uppercase">
+          <span className="bg-background px-4 text-lg sm:text-3xl font-semibold uppercase">
             Log In
           </span>
         </h2>
@@ -69,16 +69,20 @@ export default function Login() {
           />
 
           <Checkbox color="primary" className="mt-4">
-            Keep me logged in
+            <span className="text-sm sm:text-[1rem]">Keep me logged in</span>
           </Checkbox>
 
           <div className="flex flex-col items-start justify-center my-4">
-            <Button type="submit" color="primary" className="w-6/12">
+            <Button
+              type="submit"
+              color="primary"
+              className="w-6/12 h-10 sm:h-11 text-sm sm:text-md"
+            >
               Log in
             </Button>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-4 text-sm sm:text-[1rem]">
             Don't have an account?{" "}
             <a href="/signup" className="text-primary font-medium">
               Sign Up

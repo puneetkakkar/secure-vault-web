@@ -27,4 +27,7 @@ export const SignUpFormSchema = yup.object().shape({
     .string()
     .required("Master password hint is required")
     .min(5, "Password hint must be at least 5 characters"),
+  isAgreed: yup
+    .boolean()
+    .required("You must agree to the terms and conditions."),
 });

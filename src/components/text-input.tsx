@@ -14,8 +14,8 @@ interface TextInputProps extends InputProps {
 }
 
 const styles = {
-  label: "text-black/50 dark:text-white/90",
-  base: "my-6",
+  label: ["text-xs", "sm:text-[0.88rem]", "text-black/50 dark:text-white/90"],
+  base: "my-4 sm:my-6",
   input: [
     "bg-transparent",
     "mt-4",
@@ -24,6 +24,7 @@ const styles = {
   ],
   innerWrapper: "bg-transparent",
   inputWrapper: [
+    "h-12 sm:h-14",
     "bg-default-200/50",
     "dark:bg-default/60",
     "backdrop-blur-xl",
