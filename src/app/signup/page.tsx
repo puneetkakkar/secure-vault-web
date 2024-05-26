@@ -6,7 +6,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Checkbox } from "@nextui-org/react";
 import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
-import { SignUpFormSchema } from "./form-schema";
+import { SignUpFormSchema } from "./schema/form-schema";
+import { SignupService } from "./services/signup";
 
 interface IFormInput {
   email: string;
@@ -28,8 +29,15 @@ export default function Signup() {
     resolver: yupResolver(SignUpFormSchema),
   });
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
+  const onSubmit = async ({
+    email,
+    fullName,
+    masterPassword,
+    ...rest
+  }: IFormInput) => {
+    // console.log(data);
+    const signupService = new SignupService();
+    signupService.buildSignupRequest(email, masterPassword, fullName);
   };
 
   return (
