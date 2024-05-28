@@ -4,7 +4,8 @@ import { MasterKey } from "@/types/key";
 import { KeyGenerationService } from "./key-generation";
 
 export class CryptoService implements CryptoServiceAbstraction {
-  protected keyGenerationService: KeyGenerationService;
+  private keyGenerationService: KeyGenerationService;
+
   constructor() {
     this.keyGenerationService = new KeyGenerationService();
   }
@@ -12,12 +13,12 @@ export class CryptoService implements CryptoServiceAbstraction {
   async makeMasterKey(
     password: string,
     email: string,
-    PBKDFConfig: PBKDF2Config
+    pbkdf2Config: PBKDF2Config
   ): Promise<MasterKey> {
     return (await this.keyGenerationService.deriveKeyFromPassword(
       password,
       email,
-      PBKDFConfig
+      pbkdf2Config
     )) as MasterKey;
   }
 }

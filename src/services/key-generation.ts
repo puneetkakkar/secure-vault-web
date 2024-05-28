@@ -13,21 +13,14 @@ export class KeyGenerationService implements KeyGenerationServiceAbstraction {
   async deriveKeyFromPassword(
     password: string | Uint8Array,
     salt: string | Uint8Array,
-    PBKDF2Config: PBKDF2Config
+    pbkdf2Config: PBKDF2Config
   ): Promise<Uint8Array> {
-    let key: Uint8Array;
-
-    if (PBKDF2Config.iterations == null) {
-      PBKDF2Config.iterations = PBKDF2_ITERATIONS;
-    }
-
-    key = await this.cryptoFunctionService.pbkdf2(
+    const iterations = pbkdf2Config.iterations ?? PBKDF2_ITERATIONS;
+    return this.cryptoFunctionService.pbkdf2(
       password,
       salt,
       "sha256",
-      PBKDF2Config.iterations
+      iterations
     );
-
-    return key;
   }
 }

@@ -11,14 +11,11 @@ export class CryptoFunctionService implements CryptoFunctionServiceAbstraction {
   }
 
   private toBuffer(value: string | Uint8Array): Uint8Array {
-    let buffer: Uint8Array;
     if (typeof value === "string") {
-      buffer = Utils.fromUtf8ToArray(value);
-    } else {
-      buffer = value;
+      return Utils.fromUtf8ToArray(value);
     }
 
-    return buffer;
+    return value;
   }
 
   private toWebCryptoAlgorithm(algorithm: "sha256" | "sha512"): string {
@@ -33,6 +30,7 @@ export class CryptoFunctionService implements CryptoFunctionServiceAbstraction {
   ): Promise<Uint8Array> {
     const keyLength = algorithm === "sha256" ? 256 : 512;
     const passwordBuffer = this.toBuffer(password);
+    const saltBuffer = this.toBuffer(salt);
 
     const importedKey = await this.subtle.importKey(
       "raw",
@@ -42,11 +40,10 @@ export class CryptoFunctionService implements CryptoFunctionServiceAbstraction {
       ["deriveBits"]
     );
 
-    const saltBuffer = this.toBuffer(salt);
     const params = {
       name: "PBKDF2",
       salt: saltBuffer,
-      iterations: iterations,
+      iterations,
       hash: { name: this.toWebCryptoAlgorithm(algorithm) },
     };
     const derivation = await this.subtle.deriveBits(
