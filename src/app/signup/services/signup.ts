@@ -20,6 +20,6 @@ export class SignupService {
       email,
       pbkdf2Config
     );
-    console.log("MasterKey", masterKey);
+    const userKey = await this.cryptoService.makeUserKey(masterKey);
   }
 }

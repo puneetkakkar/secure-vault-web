@@ -1,13 +1,42 @@
 import { CryptoService as CryptoServiceAbstraction } from "@/abstractions/crypto";
 import { PBKDF2Config } from "@/config/pbkdf";
-import { MasterKey } from "@/types/key";
+import { EncString } from "@/models/enc-string";
+import { SymmetricCryptoKey } from "@/models/symmetric-crypto-key";
+import { MasterKey, UserKey } from "@/types/key";
+import { EncryptService } from "./encrypt";
 import { KeyGenerationService } from "./key-generation";
 
 export class CryptoService implements CryptoServiceAbstraction {
   private keyGenerationService: KeyGenerationService;
+  private encryptService: EncryptService;
 
   constructor() {
     this.keyGenerationService = new KeyGenerationService();
+    this.encryptService = new EncryptService();
+  }
+
+  private async buildProtectedSymmetricKey<T extends SymmetricCryptoKey>(
+    encryptionKey: SymmetricCryptoKey,
+    newSymKey: Uint8Array
+  ): Promise<[T, EncString]> {
+    let protectedSymKey: EncString;
+    if (encryptionKey.key.byteLength === 32) {
+      const stretchedEncryptionKey =
+        await this.keyGenerationService.stretchKey(encryptionKey);
+      protectedSymKey = await this.encryptService.encrypt(
+        newSymKey,
+        stretchedEncryptionKey
+      );
+    } else if (encryptionKey.key.byteLength === 64) {
+      protectedSymKey = await this.encryptService.encrypt(
+        newSymKey,
+        encryptionKey
+      );
+    } else {
+      throw new Error("Invalid key size.");
+    }
+
+    return [new SymmetricCryptoKey(newSymKey) as T, protectedSymKey];
   }
 
   async makeMasterKey(
@@ -20,5 +49,15 @@ export class CryptoService implements CryptoServiceAbstraction {
       email,
       pbkdf2Config
     )) as MasterKey;
+  }
+
+  async makeUserKey(masterKey: MasterKey): Promise<[UserKey, EncString]> {
+    if (masterKey == null) {
+      throw new Error("No Master Key found.");
+    }
+
+    const newUserKey = await this.keyGenerationService.createKey(512);
+
+    return this.buildProtectedSymmetricKey(masterKey, newUserKey.key);
   }
 }

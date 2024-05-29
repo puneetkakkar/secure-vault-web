@@ -1,5 +1,6 @@
 import { PBKDF2Config } from "@/config/pbkdf";
-import { MasterKey } from "@/types/key";
+import { EncString } from "@/models/enc-string";
+import { MasterKey, UserKey } from "@/types/key";
 
 export abstract class CryptoService {
   /**
@@ -14,4 +15,6 @@ export abstract class CryptoService {
     email: string,
     PBKDFConfig: PBKDF2Config
   ): Promise<MasterKey>;
+
+  abstract makeUserKey(key: MasterKey): Promise<[UserKey, EncString]>;
 }

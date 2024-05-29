@@ -1,3 +1,5 @@
-import { Tagged } from "./tagged";
+import { SymmetricCryptoKey } from "@/models/symmetric-crypto-key";
+import { Tagged } from "type-fest";
 
-export type MasterKey = Tagged<Uint8Array, "MasterKey">;
+export type UserKey = Tagged<SymmetricCryptoKey, "UserKey">;
+export type MasterKey = Tagged<SymmetricCryptoKey, "MasterKey">;

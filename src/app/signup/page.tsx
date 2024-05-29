@@ -42,7 +42,7 @@ export default function Signup() {
 
   return (
     <section className="flex flex-col sm:flex-row justify-between gap-4 sm:py-8 md:py-10">
-      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 sm:mr-24 border rounded-3xl border-primary-100">
+      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 sm:mr-24 border rounded-3xl border-primary-100 w-6/12">
         <h2 className="absolute flex -top-0.5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <span className="bg-background px-4 text-lg sm:text-3xl font-semibold uppercase">
             Sign Up
@@ -154,8 +154,15 @@ export default function Signup() {
           </div>
         </form>
       </div>
-      <div className="flex">
-        <Image src={UserOnboardImage} alt="user onboarding" priority />
+      <div className="flex w-6/12">
+        <Image
+          src={UserOnboardImage}
+          alt="user onboarding"
+          height={0}
+          width={0}
+          className="w-full h-auto"
+          priority
+        />
       </div>
     </section>
   );
