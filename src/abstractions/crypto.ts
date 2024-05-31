@@ -1,4 +1,5 @@
 import { PBKDF2Config } from "@/config/pbkdf";
+import { HashPurpose } from "@/enums/hash-purpose";
 import { EncString } from "@/models/enc-string";
 import { MasterKey, UserKey } from "@/types/key";
 
@@ -17,4 +18,10 @@ export abstract class CryptoService {
   ): Promise<MasterKey>;
 
   abstract makeUserKey(key: MasterKey): Promise<[UserKey, EncString]>;
+
+  abstract hashMasterKey(
+    password: string,
+    key: MasterKey,
+    hashPurpose?: HashPurpose
+  ): Promise<string | null>;
 }

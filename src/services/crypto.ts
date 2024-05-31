@@ -1,18 +1,23 @@
 import { CryptoService as CryptoServiceAbstraction } from "@/abstractions/crypto";
 import { PBKDF2Config } from "@/config/pbkdf";
+import { HashPurpose } from "@/enums/hash-purpose";
 import { EncString } from "@/models/enc-string";
 import { SymmetricCryptoKey } from "@/models/symmetric-crypto-key";
 import { MasterKey, UserKey } from "@/types/key";
+import { Utils } from "@/utils";
+import { CryptoFunctionService } from "./crypto-function";
 import { EncryptService } from "./encrypt";
 import { KeyGenerationService } from "./key-generation";
 
 export class CryptoService implements CryptoServiceAbstraction {
   private keyGenerationService: KeyGenerationService;
   private encryptService: EncryptService;
+  private cryptoFunctionService: CryptoFunctionService;
 
   constructor() {
     this.keyGenerationService = new KeyGenerationService();
     this.encryptService = new EncryptService();
+    this.cryptoFunctionService = new CryptoFunctionService(window);
   }
 
   private async buildProtectedSymmetricKey<T extends SymmetricCryptoKey>(
@@ -59,5 +64,25 @@ export class CryptoService implements CryptoServiceAbstraction {
     const newUserKey = await this.keyGenerationService.createKey(512);
 
     return this.buildProtectedSymmetricKey(masterKey, newUserKey.key);
+  }
+
+  async hashMasterKey(
+    password: string,
+    key: MasterKey,
+    hashPurpose?: HashPurpose
+  ): Promise<string | null> {
+    if (password == null || key == null) {
+      throw new Error("Invalid parameters.");
+    }
+
+    const iterations = hashPurpose === HashPurpose.LocalAuthorization ? 2 : 1;
+    const hash = await this.cryptoFunctionService.pbkdf2(
+      key.key,
+      password,
+      "sha256",
+      iterations
+    );
+
+    return Utils.fromBufferToB64(hash);
   }
 }

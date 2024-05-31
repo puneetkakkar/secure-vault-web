@@ -33,11 +33,17 @@ export default function Signup() {
     email,
     fullName,
     masterPassword,
+    masterPasswordHint,
     ...rest
   }: IFormInput) => {
     // console.log(data);
     const signupService = new SignupService();
-    signupService.buildSignupRequest(email, masterPassword, fullName);
+    signupService.buildSignupRequest(
+      email,
+      masterPassword,
+      fullName,
+      masterPasswordHint
+    );
   };
 
   return (
