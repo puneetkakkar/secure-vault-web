@@ -29,8 +29,8 @@ export default function Login() {
   };
 
   return (
-    <section className="flex flex-col sm:flex-row justify-between gap-4 sm:py-8 md:py-10">
-      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 sm:mr-24 border rounded-3xl border-primary-100 w-6/12">
+    <section className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-4 sm:py-8 md:py-10">
+      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 lg:mr-24 border rounded-3xl border-primary-100 w-full md:w-8/12 lg:w-6/12">
         <h2 className="absolute flex -top-0.5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <span className="bg-background px-4 text-lg sm:text-3xl font-semibold uppercase">
             Log In
@@ -90,8 +90,15 @@ export default function Login() {
           </div>
         </form>
       </div>
-      <div className="flex w-6/12">
-        <Image src={UserOnboardImage} alt="user onboarding" priority />
+      <div className="flex md:w-8/12 lg:w-6/12">
+        <Image
+          src={UserOnboardImage}
+          alt="user onboarding"
+          height={0}
+          width={0}
+          className="w-full h-auto"
+          priority
+        />
       </div>
     </section>
   );
