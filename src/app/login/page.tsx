@@ -3,7 +3,7 @@
 import UserOnboardImage from "@/../assets/user-onboard.svg";
 import TextInput from "@/components/text-input";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Checkbox } from "@nextui-org/react";
+import { Button, Checkbox } from "@heroui/react";
 import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
 import { LoginFormSchema } from "./form-schema";

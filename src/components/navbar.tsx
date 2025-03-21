@@ -2,7 +2,7 @@
 
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
-import { Button } from "@nextui-org/button";
+import { Button } from "@heroui/button";
 import {
   NavbarBrand,
   NavbarContent,
@@ -11,8 +11,8 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
   Navbar as NextUINavbar,
-} from "@nextui-org/navbar";
-import { link as linkStyles } from "@nextui-org/theme";
+} from "@heroui/navbar";
+import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
 import NextLink from "next/link";
 import { usePathname } from "next/navigation";
@@ -20,8 +20,7 @@ import { Logo } from "./icons";
 
 export const Navbar = () => {
   const pathname = usePathname();
-  const showAuthButtons =
-    pathname === "/signup" || pathname === "/login" ? false : true;
+  const showAuthButtons = !(pathname === "/signup" || pathname === "/login");
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -43,7 +42,7 @@ export const Navbar = () => {
               <NextLink
                 className={clsx(
                   linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium font-josefin"
+                  "data-[active=true]:text-primary data-[active=true]:font-medium font-josefin",
                 )}
                 color="foreground"
                 href={item.href}
@@ -70,7 +69,7 @@ export const Navbar = () => {
                 href="/login"
                 color="primary"
                 variant="flat"
-                className="font-normal font-josefin"
+                className="font-normal font-josefin text-primary"
               >
                 Login
               </Button>

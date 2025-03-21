@@ -1,4 +1,4 @@
-import { InputProps, useInput } from "@nextui-org/react";
+import { InputProps, useInput } from "@heroui/react";
 import React, { Ref, forwardRef } from "react";
 import { CloseFilledIcon } from "./icons";
 
