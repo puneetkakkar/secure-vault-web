@@ -1,5 +1,5 @@
 import NotFoundImage from "@/../assets/not-found.svg";
-import { link as linkStyles } from "@nextui-org/theme";
+import { link as linkStyles } from "@heroui/theme";
 import { clsx } from "clsx";
 import Image from "next/image";
 import Link from "next/link";
