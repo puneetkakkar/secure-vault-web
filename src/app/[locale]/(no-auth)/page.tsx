@@ -1,6 +1,6 @@
 import { subtitle, title } from "@/components/primitives";
 import Image from "next/image";
-import HackerImage from "../../assets/homepage-hacker.svg";
+import HackerImage from "../../../../assets/homepage-hacker.svg";
 
 export default function Home() {
   return (

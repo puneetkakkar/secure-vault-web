@@ -1,27 +1,25 @@
-"use client";
-
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
 import { Button } from "@heroui/button";
 import {
+  Navbar as NextUINavbar,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
-  Navbar as NextUINavbar,
 } from "@heroui/navbar";
 import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
 import NextLink from "next/link";
-import { usePathname } from "next/navigation";
 import { Logo } from "./icons";
 
-export const Navbar = () => {
-  const pathname = usePathname();
-  const showAuthButtons = !(pathname === "/signup" || pathname === "/login");
-
+export const Navbar = ({
+  showAuthButtons = true,
+}: {
+  showAuthButtons?: boolean;
+}) => {
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
