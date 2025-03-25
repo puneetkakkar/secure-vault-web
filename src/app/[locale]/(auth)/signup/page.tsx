@@ -1,6 +1,6 @@
 "use client";
 
-import UserOnboardImage from "@/../assets/user-onboard.svg";
+import UserOnboardImage from "../../../../../assets/user-onboard.svg";
 import TextInput from "@/components/text-input";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Checkbox } from "@heroui/react";
@@ -38,11 +38,11 @@ export default function Signup() {
   }: IFormInput) => {
     // console.log(data);
     const signupService = new SignupService();
-    signupService.buildSignupRequest(
+    await signupService.buildSignupRequest(
       email,
       masterPassword,
       fullName,
-      masterPasswordHint
+      masterPasswordHint,
     );
   };
 

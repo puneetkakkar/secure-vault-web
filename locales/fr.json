@@ -1,0 +1,9 @@
+{
+  "RootLayout": {
+    "home_link": "accueil"
+  },
+  "NotFound": {
+    "couldnt_find_resource": "Impossible de trouver la ressource demandée.",
+    "return_home": "Retour à l'accueil"
+  }
+}
