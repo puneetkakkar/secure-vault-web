@@ -1,3 +1,5 @@
+"use client";
+
 import { CryptoFunctionService as CryptoFunctionServiceAbstraction } from "@/abstractions/crypto-function";
 import { CsprngArray } from "@/types/csprng";
 import { Utils } from "@/utils";
@@ -27,7 +29,7 @@ export class CryptoFunctionService implements CryptoFunctionServiceAbstraction {
     password: string | Uint8Array,
     salt: string | Uint8Array,
     algorithm: "sha256" | "sha512",
-    iterations: number
+    iterations: number,
   ): Promise<Uint8Array> {
     const keyLength = algorithm === "sha256" ? 256 : 512;
     const passwordBuffer = this.toBuffer(password);
@@ -38,7 +40,7 @@ export class CryptoFunctionService implements CryptoFunctionServiceAbstraction {
       passwordBuffer,
       { name: "PBKDF2" },
       false,
-      ["deriveBits"]
+      ["deriveBits"],
     );
 
     const params = {
@@ -50,7 +52,7 @@ export class CryptoFunctionService implements CryptoFunctionServiceAbstraction {
     const derivation = await this.subtle.deriveBits(
       params,
       importedKey,
-      keyLength
+      keyLength,
     );
 
     return new Uint8Array(derivation);
@@ -82,19 +84,19 @@ export class CryptoFunctionService implements CryptoFunctionServiceAbstraction {
   async aesEncrypt(
     data: Uint8Array,
     iv: Uint8Array,
-    key: Uint8Array
+    key: Uint8Array,
   ): Promise<Uint8Array> {
     const impKey = await this.subtle.importKey(
       "raw",
       key,
       { name: "AES-CBC" } as any,
       false,
-      ["encrypt"]
+      ["encrypt"],
     );
     const encryptedBuffer = await this.subtle.encrypt(
       { name: "AES-CBC", iv: iv },
       impKey,
-      data
+      data,
     );
     return new Uint8Array(encryptedBuffer);
   }
@@ -102,7 +104,7 @@ export class CryptoFunctionService implements CryptoFunctionServiceAbstraction {
   async hmac(
     value: Uint8Array,
     key: Uint8Array,
-    algorithm: "sha256" | "sha512"
+    algorithm: "sha256" | "sha512",
   ): Promise<Uint8Array> {
     const signingAlgorithm = {
       name: "HMAC",
@@ -114,12 +116,12 @@ export class CryptoFunctionService implements CryptoFunctionServiceAbstraction {
       key,
       signingAlgorithm,
       false,
-      ["sign"]
+      ["sign"],
     );
     const signedBuffer = await this.subtle.sign(
       signingAlgorithm,
       impKey,
-      value
+      value,
     );
     return new Uint8Array(signedBuffer);
   }
@@ -138,7 +140,7 @@ export class CryptoFunctionService implements CryptoFunctionServiceAbstraction {
     prk: Uint8Array,
     info: string | Uint8Array,
     outputByteSize: number,
-    algorithm: "sha256" | "sha512"
+    algorithm: "sha256" | "sha512",
   ): Promise<Uint8Array> {
     const hashLen = algorithm === "sha256" ? 32 : 64;
     if (outputByteSize > 255 * hashLen) {

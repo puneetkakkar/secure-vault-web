@@ -1,5 +1,5 @@
 import { SVGProps } from "react";
-import { Tagged } from "./tagged";
+import { Tagged } from "type-fest";
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
