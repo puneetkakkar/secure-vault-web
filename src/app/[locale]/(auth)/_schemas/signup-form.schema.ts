@@ -17,7 +17,7 @@ export const SignUpFormSchema = yup.object().shape({
     .max(32, "Master password cannot exceed 32 characters")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
-      "Master password must contain at least one lowercase, one uppercase, one number, and one special character"
+      "Master password must contain at least one lowercase, one uppercase, one number, and one special character",
     ),
   confirmMasterPassword: yup
     .string()

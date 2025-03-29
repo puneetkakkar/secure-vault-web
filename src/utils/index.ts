@@ -1,3 +1,5 @@
+import { env } from "@/lib/env/env";
+
 export class Utils {
   static inited = false;
   static global: typeof global;

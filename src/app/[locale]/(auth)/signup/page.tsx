@@ -3,11 +3,12 @@
 import UserOnboardImage from "../../../../../assets/user-onboard.svg";
 import TextInput from "@/components/text-input";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Checkbox } from "@heroui/react";
+import { addToast, Button, Checkbox } from "@heroui/react";
 import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
-import { SignUpFormSchema } from "./schema/form-schema";
-import { SignupService } from "./services/signup";
+
+import { SignUpFormSchema } from "@/app/[locale]/(auth)/_schemas/signup-form.schema";
+import { SignupService } from "@/app/[locale]/(auth)/_services/signup.service";
 
 interface IFormInput {
   email: string;
@@ -26,6 +27,14 @@ export default function Signup() {
   } = useForm<IFormInput>({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
+    defaultValues: {
+      email: "",
+      fullName: "",
+      masterPassword: "",
+      confirmMasterPassword: "",
+      masterPasswordHint: "",
+      isAgreed: false,
+    },
     resolver: yupResolver(SignUpFormSchema),
   });
 
@@ -36,14 +45,36 @@ export default function Signup() {
     masterPasswordHint,
     ...rest
   }: IFormInput) => {
-    // console.log(data);
-    const signupService = new SignupService();
-    await signupService.buildSignupRequest(
-      email,
-      masterPassword,
-      fullName,
-      masterPasswordHint,
-    );
+    try {
+      // await registerUserAction(
+      //   email,
+      //   masterPassword,
+      //   fullName,
+      //   masterPasswordHint,
+      // );
+      const signupService = new SignupService();
+      await signupService.signupUser(
+        email,
+        masterPassword,
+        fullName,
+        masterPasswordHint,
+      );
+    } catch (ex: any) {
+      console.log("Signup error: ", ex);
+      addToast({
+        variant: "flat",
+        color: "danger",
+        title: "Error",
+        description: "Incorrect details entered",
+      });
+      return;
+    }
+
+    addToast({
+      variant: "flat",
+      color: "primary",
+      title: "Account created successfully.",
+    });
   };
 
   return (
