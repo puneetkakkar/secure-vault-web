@@ -27,7 +27,7 @@ export const Navbar = ({
           <NextLink className="flex justify-start items-center gap-1" href="/">
             <Logo />
             <span className="font-josefin mt-2 font-bold md:mt-1">
-              SECRET&nbsp;
+              SECURE&nbsp;
               <span className="font-josefin bg-gradient-to-tl from-[#8C52FF] to-[#5E17EB] text-transparent bg-clip-text">
                 VAULT
               </span>

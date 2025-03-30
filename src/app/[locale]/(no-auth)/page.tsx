@@ -11,7 +11,7 @@ export default function Home() {
         </h1>
         <h1 className={title({ size: "xs", class: "font-medium" })}>
           Keep your secrets safe with{" "}
-          <span className="font-bold">SECRET&nbsp;</span>
+          <span className="font-bold">SECURE&nbsp;</span>
         </h1>
         <h1
           className={title({

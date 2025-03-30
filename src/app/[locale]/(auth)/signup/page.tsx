@@ -2,13 +2,15 @@
 
 import UserOnboardImage from "../../../../../assets/user-onboard.svg";
 import TextInput from "@/components/text-input";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { addToast, Button, Checkbox } from "@heroui/react";
 import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
 
 import { SignUpFormSchema } from "@/app/[locale]/(auth)/_schemas/signup-form.schema";
+import { useRouter } from "@/i18n/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SignupService } from "@/app/[locale]/(auth)/_services/signup.service";
+import { useTransition } from "react";
 
 interface IFormInput {
   email: string;
@@ -20,10 +22,13 @@ interface IFormInput {
 }
 
 export default function Signup() {
+  const [isPending, startTransition] = useTransition();
+
   const {
     control,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<IFormInput>({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
@@ -35,8 +40,10 @@ export default function Signup() {
       masterPasswordHint: "",
       isAgreed: false,
     },
-    resolver: yupResolver(SignUpFormSchema),
+    resolver: zodResolver(SignUpFormSchema),
   });
+
+  const router = useRouter();
 
   const onSubmit = async ({
     email,
@@ -46,35 +53,35 @@ export default function Signup() {
     ...rest
   }: IFormInput) => {
     try {
-      // await registerUserAction(
-      //   email,
-      //   masterPassword,
-      //   fullName,
-      //   masterPasswordHint,
-      // );
-      const signupService = new SignupService();
-      await signupService.signupUser(
-        email,
-        masterPassword,
-        fullName,
-        masterPasswordHint,
-      );
+      startTransition(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        // const signupService = new SignupService();
+        // await signupService.signupUser(
+        //   email,
+        //   masterPassword,
+        //   fullName,
+        //   masterPasswordHint,
+        // );
+
+        addToast({
+          variant: "flat",
+          color: "secondary",
+          title: "Account created successfully.",
+        });
+
+        reset();
+
+        router.push("/verify-email");
+      });
     } catch (ex: any) {
-      console.log("Signup error: ", ex);
       addToast({
         variant: "flat",
         color: "danger",
         title: "Error",
-        description: "Incorrect details entered",
+        description: ex?.message ?? "Something went wrong",
       });
       return;
     }
-
-    addToast({
-      variant: "flat",
-      color: "primary",
-      title: "Account created successfully.",
-    });
   };
 
   return (
@@ -163,8 +170,8 @@ export default function Signup() {
           <Controller
             name="isAgreed"
             control={control}
-            render={({ field: { onChange } }) => (
-              <Checkbox color="primary" onChange={onChange}>
+            render={({ field: { onChange, value } }) => (
+              <Checkbox color="primary" onChange={onChange} isSelected={value}>
                 <span className="text-sm sm:text-[1rem]">
                   I agree to the terms and conditions.
                 </span>
@@ -176,11 +183,12 @@ export default function Signup() {
           )}
           <div className="flex flex-col items-start justify-center my-4">
             <Button
+              isLoading={isPending}
               type="submit"
               color="primary"
               className="w-6/12 h-10 sm:h-11 text-sm sm:text-md"
             >
-              Sign Up
+              {isPending ? "" : "Sign Up"}
             </Button>
           </div>
           <div className="mt-4 text-sm sm:text-[1rem]">

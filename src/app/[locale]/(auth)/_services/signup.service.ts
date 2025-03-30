@@ -39,7 +39,7 @@ export class SignupService {
     );
 
     const { encryptedString } = newEncUserKey;
-    const signupRequestPayload = this.buildSignupRequest(
+    const signupRequest = this.buildSignupRequest(
       email,
       name,
       masterKeyHash,
@@ -48,9 +48,12 @@ export class SignupService {
       pbkdf2Config.iterations,
     );
 
-    // console.log("signupRequestPayload", JSON.stringify(signupRequestPayload));
+    const actionWithExtraParameters = signupUserAction.bind(
+      null,
+      signupRequest.toJSON(),
+    );
 
-    return await signupUserAction(signupRequestPayload);
+    return await actionWithExtraParameters();
   }
 
   private buildSignupRequest(
