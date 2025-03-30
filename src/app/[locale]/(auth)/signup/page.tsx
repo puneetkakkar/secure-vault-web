@@ -7,17 +7,16 @@ import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
 
 import { SignUpFormSchema } from "@/app/[locale]/(auth)/_schemas/signup-form.schema";
-import { useRouter } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignupService } from "@/app/[locale]/(auth)/_services/signup.service";
 import { useTransition } from "react";
 
 interface IFormInput {
   email: string;
   fullName: string;
-  masterPassword: string;
-  confirmMasterPassword: string;
-  masterPasswordHint: string;
+  // masterPassword: string;
+  // confirmMasterPassword: string;
+  // masterPasswordHint: string;
   isAgreed: boolean;
 }
 
@@ -35,9 +34,9 @@ export default function Signup() {
     defaultValues: {
       email: "",
       fullName: "",
-      masterPassword: "",
-      confirmMasterPassword: "",
-      masterPasswordHint: "",
+      // masterPassword: "",
+      // confirmMasterPassword: "",
+      // masterPasswordHint: "",
       isAgreed: false,
     },
     resolver: zodResolver(SignUpFormSchema),
@@ -48,8 +47,8 @@ export default function Signup() {
   const onSubmit = async ({
     email,
     fullName,
-    masterPassword,
-    masterPasswordHint,
+    // masterPassword,
+    // masterPasswordHint,
     ...rest
   }: IFormInput) => {
     try {
@@ -71,7 +70,7 @@ export default function Signup() {
 
         reset();
 
-        router.push("/verify-email");
+        router.push("/email-verification");
       });
     } catch (ex: any) {
       addToast({
@@ -121,52 +120,52 @@ export default function Signup() {
               />
             )}
           />
-          <div className="flex flex-row justify-between w-">
-            <Controller
-              name="masterPassword"
-              control={control}
-              render={({ field }) => (
-                <TextInput
-                  label="Master Password"
-                  type="password"
-                  labelPlacement="inside"
-                  errorMessage={errors.masterPassword?.message}
-                  aria-invalid={errors.masterPassword ? "true" : "false"}
-                  customStyles={{ base: "mr-4" }}
-                  {...field}
-                />
-              )}
-            />
-            <Controller
-              name="confirmMasterPassword"
-              control={control}
-              render={({ field }) => (
-                <TextInput
-                  label="Confirm Password"
-                  type="password"
-                  labelPlacement="inside"
-                  errorMessage={errors.confirmMasterPassword?.message}
-                  aria-invalid={errors.confirmMasterPassword ? "true" : "false"}
-                  customStyles={{ base: "" }}
-                  {...field}
-                />
-              )}
-            />
-          </div>
-          <Controller
-            name="masterPasswordHint"
-            control={control}
-            render={({ field }) => (
-              <TextInput
-                label="Master Password Hint"
-                type="text"
-                labelPlacement="inside"
-                errorMessage={errors.masterPasswordHint?.message}
-                aria-invalid={errors.masterPasswordHint ? "true" : "false"}
-                {...field}
-              />
-            )}
-          />
+          {/*<div className="flex flex-row justify-between w-">*/}
+          {/*  <Controller*/}
+          {/*    name="masterPassword"*/}
+          {/*    control={control}*/}
+          {/*    render={({ field }) => (*/}
+          {/*      <TextInput*/}
+          {/*        label="Master Password"*/}
+          {/*        type="password"*/}
+          {/*        labelPlacement="inside"*/}
+          {/*        errorMessage={errors.masterPassword?.message}*/}
+          {/*        aria-invalid={errors.masterPassword ? "true" : "false"}*/}
+          {/*        customStyles={{ base: "mr-4" }}*/}
+          {/*        {...field}*/}
+          {/*      />*/}
+          {/*    )}*/}
+          {/*  />*/}
+          {/*  <Controller*/}
+          {/*    name="confirmMasterPassword"*/}
+          {/*    control={control}*/}
+          {/*    render={({ field }) => (*/}
+          {/*      <TextInput*/}
+          {/*        label="Confirm Password"*/}
+          {/*        type="password"*/}
+          {/*        labelPlacement="inside"*/}
+          {/*        errorMessage={errors.confirmMasterPassword?.message}*/}
+          {/*        aria-invalid={errors.confirmMasterPassword ? "true" : "false"}*/}
+          {/*        customStyles={{ base: "" }}*/}
+          {/*        {...field}*/}
+          {/*      />*/}
+          {/*    )}*/}
+          {/*  />*/}
+          {/*</div>*/}
+          {/*<Controller*/}
+          {/*  name="masterPasswordHint"*/}
+          {/*  control={control}*/}
+          {/*  render={({ field }) => (*/}
+          {/*    <TextInput*/}
+          {/*      label="Master Password Hint"*/}
+          {/*      type="text"*/}
+          {/*      labelPlacement="inside"*/}
+          {/*      errorMessage={errors.masterPasswordHint?.message}*/}
+          {/*      aria-invalid={errors.masterPasswordHint ? "true" : "false"}*/}
+          {/*      {...field}*/}
+          {/*    />*/}
+          {/*  )}*/}
+          {/*/>*/}
           <Controller
             name="isAgreed"
             control={control}
@@ -193,9 +192,9 @@ export default function Signup() {
           </div>
           <div className="mt-4 text-sm sm:text-[1rem]">
             Already have an account?{" "}
-            <a href="/login" className="text-primary font-medium">
+            <Link href={"/login"} className="text-primary font-medium">
               Log In
-            </a>
+            </Link>
           </div>
         </form>
       </div>

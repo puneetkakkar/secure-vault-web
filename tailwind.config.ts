@@ -18,11 +18,16 @@ const config: Config = {
   darkMode: "class",
   plugins: [
     heroui({
+      addCommonColors: true,
       themes: {
         light: {
           colors: {
             background: "#FFFFFF",
             foreground: "#374151",
+            default: {
+              DEFAULT: "#5E17EB",
+              foreground: "#FFFFFF",
+            },
             primary: {
               DEFAULT: "#5E17EB",
               foreground: "#FFFFFF",
@@ -35,6 +40,7 @@ const config: Config = {
             background: "#0E001F",
             foreground: "#FFFFFF",
             primary: {
+              "100": "#301050",
               DEFAULT: "#FFFFFF",
               foreground: "#5E17EB",
             },

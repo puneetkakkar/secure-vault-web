@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
 import { LoginFormSchema } from "../_schemas/login-form.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "@/i18n/navigation";
 
 interface IFormInput {
   email: string;
@@ -83,10 +84,10 @@ export default function Login() {
           </div>
 
           <div className="mt-4 text-sm sm:text-[1rem]">
-            Don't have an account?{" "}
-            <a href="/signup" className="text-primary font-medium">
+            {"Don't have an account? "}
+            <Link href={"/signup"} className="text-primary font-medium">
               Sign Up
-            </a>
+            </Link>
           </div>
         </form>
       </div>
