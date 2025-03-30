@@ -10,7 +10,6 @@ import { NextResponse } from "next/server";
 export async function signupUserAction(
   signupRequestPayload: any,
 ): Promise<NextResponse<SignupResponse>> {
-  console.log("Action", typeof signupRequestPayload);
   try {
     const authApiService = new AuthApiService();
     return await authApiService.signupUser(signupRequestPayload);

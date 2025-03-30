@@ -21,7 +21,6 @@ export class AuthApiService {
     signupRequestPayload: any,
   ): Promise<NextResponse<SignupResponse>> {
     try {
-      console.log("signupUser", signupRequestPayload);
       const response = await this.apiService.post<
         SignUpRequest,
         NextResponse<SignupResponse>

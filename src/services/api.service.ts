@@ -18,24 +18,20 @@ export class ApiService {
     endpoint: string | undefined,
     options: RequestInit,
   ): Promise<T> {
-    console.log("endpoint ", endpoint, "options", options);
-    // if (!endpoint) {
-    //   throw new Error("Endpoint is required but was not provided.");
-    // }
-    //
-    // const response = await fetch(`${this.baseUrl}${endpoint}`, options);
-    //
-    // if (!response.ok) {
-    //   const error = await response.json();
-    //   throw new Error(
-    //     `API request failed: ${error.message || "Unknown error"}`,
-    //   );
-    // }
-    //
-    // return (await response.json()) as T;
+    if (!endpoint) {
+      throw new Error("Endpoint is required but was not provided.");
+    }
 
-    // @ts-ignore
-    return;
+    const response = await fetch(`${this.baseUrl}${endpoint}`, options);
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(
+        `API request failed: ${error.message || "Unknown error"}`,
+      );
+    }
+
+    return (await response.json()) as T;
   }
 
   public get<T>(
@@ -52,7 +48,6 @@ export class ApiService {
   }
 
   public post<T, R>(endpoint: string | undefined, data: T): Promise<R> {
-    console.log("Data", data);
     return this.request<R>(endpoint, {
       method: "POST",
       headers: {

@@ -13,6 +13,17 @@ export class SignUpRequest {
   ) {
     this.masterPasswordHint = masterPasswordHint ? masterPasswordHint : null;
   }
+
+  toJSON() {
+    return {
+      email: this.email,
+      name: this.name,
+      masterPasswordHash: this.masterPasswordHash,
+      masterPasswordHint: this.masterPasswordHint,
+      userKey: this.userKey,
+      kdfIterations: this.kdfIterations,
+    };
+  }
 }
 
 export interface SignupResponse {

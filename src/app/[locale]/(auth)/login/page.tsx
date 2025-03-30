@@ -2,11 +2,11 @@
 
 import UserOnboardImage from "../../../../../assets/user-onboard.svg";
 import TextInput from "@/components/text-input";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Checkbox } from "@heroui/react";
 import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
-import { LoginFormSchema } from "./form-schema";
+import { LoginFormSchema } from "../_schemas/login-form.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface IFormInput {
   email: string;
@@ -21,7 +21,7 @@ export default function Login() {
   } = useForm<IFormInput>({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
-    resolver: yupResolver(LoginFormSchema),
+    resolver: zodResolver(LoginFormSchema),
   });
 
   const onSubmit = async (data: any) => {
