@@ -22,10 +22,9 @@ export class AuthApiService {
   ): Promise<NextResponse<SignupResponse>> {
     try {
       const response = await this.apiService.post<
-        SignUpRequest,
+        any,
         NextResponse<SignupResponse>
       >(env.AUTH_SIGNUP_USER, signupRequestPayload);
-      console.log("SignupResponse", response);
 
       return response;
     } catch (ex: unknown) {

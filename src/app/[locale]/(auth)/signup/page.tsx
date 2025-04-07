@@ -1,22 +1,20 @@
 "use client";
 
-import UserOnboardImage from "../../../../../assets/user-onboard.svg";
 import TextInput from "@/components/text-input";
 import { addToast, Button, Checkbox } from "@heroui/react";
 import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
+import UserOnboardImage from "../../../../../assets/user-onboard.svg";
 
 import { SignUpFormSchema } from "@/app/[locale]/(auth)/_schemas/signup-form.schema";
 import { Link, useRouter } from "@/i18n/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
+import { SignupService } from "../_services/signup.service";
 
 interface IFormInput {
   email: string;
   fullName: string;
-  // masterPassword: string;
-  // confirmMasterPassword: string;
-  // masterPasswordHint: string;
   isAgreed: boolean;
 }
 
@@ -47,20 +45,14 @@ export default function Signup() {
   const onSubmit = async ({
     email,
     fullName,
-    // masterPassword,
-    // masterPasswordHint,
-    ...rest
   }: IFormInput) => {
     try {
       startTransition(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        // const signupService = new SignupService();
-        // await signupService.signupUser(
-        //   email,
-        //   masterPassword,
-        //   fullName,
-        //   masterPasswordHint,
-        // );
+        const signupService = new SignupService();
+        await signupService.signupUser(
+          email,
+          fullName
+        );
 
         addToast({
           variant: "flat",

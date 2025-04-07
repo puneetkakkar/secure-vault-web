@@ -1,10 +1,9 @@
 "use server";
 
-import { AuthApiService } from "@/app/[locale]/(auth)/_services/auth-api.service";
 import {
-  SignUpRequest,
-  SignupResponse,
+	SignupResponse
 } from "@/app/[locale]/(auth)/_models/signup.model";
+import { AuthApiService } from "@/app/[locale]/(auth)/_services/auth-api.service";
 import { NextResponse } from "next/server";
 
 export async function signupUserAction(
