@@ -16,61 +16,63 @@ export class SignupService {
 
   async signupUser(
     email: string,
-    masterPassword: string,
+    // masterPassword: string,
     name: string,
-    hint: string,
+    // hint: string,
   ) {
-    const pbkdf2Config = new PBKDF2Config(PBKDF2_ITERATIONS);
-    const masterKey = await this.cryptoService.makeMasterKey(
-      masterPassword,
-      email,
-      pbkdf2Config,
-    );
-    const [newUserKey, newEncUserKey] =
-      await this.cryptoService.makeUserKey(masterKey);
+    // const pbkdf2Config = new PBKDF2Config(PBKDF2_ITERATIONS);
+    // const masterKey = await this.cryptoService.makeMasterKey(
+    //   masterPassword,
+    //   email,
+    //   pbkdf2Config,
+    // );
+    // const [newUserKey, newEncUserKey] =
+    //   await this.cryptoService.makeUserKey(masterKey);
 
-    if (!newUserKey || !newEncUserKey) {
-      throw new Error("User key could not be created");
-    }
+    // if (!newUserKey || !newEncUserKey) {
+    //   throw new Error("User key could not be created");
+    // }
 
-    const masterKeyHash = await this.cryptoService.hashMasterKey(
-      masterPassword,
-      masterKey,
-    );
+    // const masterKeyHash = await this.cryptoService.hashMasterKey(
+    //   masterPassword,
+    //   masterKey,
+    // );
 
-    const { encryptedString } = newEncUserKey;
-    const signupRequest = this.buildSignupRequest(
-      email,
-      name,
-      masterKeyHash,
-      hint,
-      encryptedString,
-      pbkdf2Config.iterations,
-    );
+    // const { encryptedString } = newEncUserKey;
+    // const signupRequest = this.buildSignupRequest(
+    //   email,
+    //   name,
+    //   masterKeyHash,
+    //   hint,
+    //   encryptedString,
+    //   pbkdf2Config.iterations,
+    // );
+
+    const signUpRequest = new SignUpRequest(email, name);
 
     const actionWithExtraParameters = signupUserAction.bind(
       null,
-      signupRequest.toJSON(),
+      signUpRequest.toJSON(),
     );
 
     return await actionWithExtraParameters();
   }
 
-  private buildSignupRequest(
-    email: string,
-    name: string,
-    masterKeyHash: string | null,
-    hint: string,
-    encryptedUserKey: EncryptedString | undefined,
-    pbkdf2Iterations: number,
-  ) {
-    return new SignUpRequest(
-      email,
-      name,
-      masterKeyHash,
-      hint,
-      encryptedUserKey,
-      pbkdf2Iterations,
-    );
-  }
+  // private buildSignupRequest(
+  //   email: string,
+  //   name: string,
+  //   masterKeyHash: string | null,
+  //   hint: string,
+  //   encryptedUserKey: EncryptedString | undefined,
+  //   pbkdf2Iterations: number,
+  // ) {
+  //   return new SignUpRequest(
+  //     email,
+  //     name,
+  //     masterKeyHash,
+  //     hint,
+  //     encryptedUserKey,
+  //     pbkdf2Iterations,
+  //   );
+  // }
 }
