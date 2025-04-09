@@ -12,14 +12,9 @@ import {
 } from "@/app/[locale]/(auth)/_schemas/signup-form.schema";
 import { Link, useRouter } from "@/i18n/navigation";
 import { serviceFactory } from "@/services/service-factory";
+import { Utils } from "@/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
-
-interface IFormInput {
-  email: string;
-  fullName: string;
-  isAgreed: boolean;
-}
 
 export default function Signup() {
   const router = useRouter();
@@ -57,7 +52,11 @@ export default function Signup() {
         });
 
         reset();
-        router.push("/verify-email");
+
+        router.push({
+          pathname: "/email-verification",
+          query: { email: data.email, name: data.fullName },
+        });
       } catch (error: any) {
         addToast({
           variant: "flat",
@@ -70,7 +69,7 @@ export default function Signup() {
   };
 
   return (
-    <section className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-4 sm:py-8 md:py-10">
+    <section className="flex flex-col mt-16 mx-6 lg:flex-row items-center lg:items-start justify-between gap-4 sm:py-8 md:py-10">
       <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 lg:mr-24 border rounded-3xl border-primary-100 w-full md:w-8/12 lg:w-6/12">
         <h2 className="absolute flex -top-0.5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <span className="bg-background px-4 text-lg sm:text-3xl font-semibold uppercase">

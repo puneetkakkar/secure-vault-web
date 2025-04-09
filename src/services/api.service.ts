@@ -1,5 +1,6 @@
 import { env } from "@/lib/env/env";
 import { ApiConfig, ApiError, ApiResponse } from "@/types/api";
+import { UnhandledError } from "@/types/unhandled-error";
 
 export class ApiService {
   private readonly baseUrl: string;
@@ -19,13 +20,7 @@ export class ApiService {
     options: RequestInit
   ): Promise<ApiResponse<T>> {
     if (!endpoint) {
-      throw new ApiError(
-        "Endpoint is required but was not provided.",
-        500,
-        new Date().toISOString(),
-        "INVALID_ENDPOINT",
-        {}
-      );
+      throw new Error("Endpoint is required but was not provided.");
     }
 
     const controller = new AbortController();
@@ -46,22 +41,16 @@ export class ApiService {
       try {
         responseData = await response.json();
       } catch (jsonError) {
-        throw new ApiError(
-          `Failed to parse JSON response`,
-          response.status,
-          new Date().toISOString(),
-          "JSON_PARSE_ERROR",
-          {}
-        );
+        throw new Error(`Failed to parse JSON response`);
       }
 
       if (!response.ok) {
         throw new ApiError(
-          responseData.message || "An unexpected error occurred",
+          responseData.message,
           response.status,
           new Date().toISOString(),
           responseData.code,
-          responseData.errors || {}
+          responseData.errors ?? null
         );
       }
 
@@ -77,7 +66,7 @@ export class ApiService {
 
       if (error instanceof Error && error.name === "AbortError") {
         throw new ApiError(
-          "Request timeout",
+          "Request has been aborted due to timeout",
           408,
           new Date().toISOString(),
           "TIMEOUT",
@@ -85,14 +74,11 @@ export class ApiService {
         );
       }
 
-      throw new ApiError(
-        error instanceof Error
-          ? error.message
-          : "An unexpected network or setup error occurred",
+      throw new UnhandledError(
+        error instanceof Error ? error.message : "An unexpected error occurred",
         500,
         new Date().toISOString(),
-        "NETWORK_OR_SETUP_ERROR",
-        {}
+        "UNHANDLED_ERROR"
       );
     } finally {
       clearTimeout(timeoutId);

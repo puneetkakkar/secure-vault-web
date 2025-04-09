@@ -65,6 +65,13 @@ export class Utils {
     }
     return result;
   }
+
+  static obscureEmailAddress(email: string): string {
+    const [localPart, domain] = email.split("@");
+    const obscuredLocalPart =
+      localPart.slice(0, 2) + "****" + localPart.slice(-2);
+    return `${obscuredLocalPart}@${domain}`;
+  }
 }
 
 Utils.init();

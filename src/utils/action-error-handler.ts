@@ -1,4 +1,5 @@
 import { ApiError, ApiErrorResponse } from "@/types/api";
+import { UnhandledError } from "@/types/unhandled-error";
 import { isDevelopment } from "./env";
 
 // ANSI color codes
@@ -29,15 +30,22 @@ export type ActionResult<TData = void> =
     };
 
 // Helper type guard for ApiError-like objects
-function isApiErrorLike(error: any): error is ApiError | ApiErrorResponse {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "message" in error &&
-    (typeof error.status === "number" || typeof error.status === "undefined") &&
-    (typeof error.code === "string" || typeof error.code === "undefined") &&
-    (!("errors" in error) || typeof error.errors === "object")
-  );
+function isApiError(error: any): error is ApiError | ApiErrorResponse {
+  if (error instanceof ApiError) {
+    return (
+      typeof error === "object" &&
+      error !== null &&
+      "message" in error &&
+      (typeof error.status === "number" ||
+        typeof error.status === "undefined") &&
+      (typeof error.code === "string" || typeof error.code === "undefined") &&
+      (!("errors" in error) ||
+        typeof error.errors === "object" ||
+        error.errors === null)
+    );
+  }
+
+  return false;
 }
 
 /** Internal execution logic */
@@ -68,7 +76,7 @@ async function executeHandledAction<TArgs extends any[], TData>(
       ...successResult,
     } as ActionResult<TData>;
   } catch (error) {
-    if (isApiErrorLike(error)) {
+    if (isApiError(error)) {
       const status = error.status ?? 500;
 
       // Log all errors in development, only 500s in production
@@ -94,9 +102,20 @@ async function executeHandledAction<TArgs extends any[], TData>(
       };
     } else {
       // Always log unexpected errors
+      const unexpectedErrorLogContext: UnhandledError = {
+        name: "UnhandledError",
+        message:
+          error instanceof Error
+            ? error.message
+            : "An unexpected error occurred.",
+        status: 500,
+        timestamp: new Date().toISOString(),
+        code: "UNEXPECTED_RUNTIME_ERROR",
+      };
+
       console.error(
         `${colors.red}${colors.bright}[API Unexpected Error]${colors.reset} ${colors.dim}${actionFn.name}${colors.reset}`,
-        error
+        unexpectedErrorLogContext
       );
 
       return {
