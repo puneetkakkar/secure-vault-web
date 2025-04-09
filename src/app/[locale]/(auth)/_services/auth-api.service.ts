@@ -1,35 +1,21 @@
-import { ApiService, ApiServiceConfig } from "@/services/api.service";
-import {
-  SignUpRequest,
-  SignupResponse,
-} from "@/app/[locale]/(auth)/_models/signup.model";
-import { NextResponse } from "next/server";
-import { env } from "@/lib/env/env";
+import { API_ENDPOINTS } from "@/config/api-endpoints";
+import { ApiService } from "@/services/api.service";
+import { ServerActionResponse } from "@/types/action";
 
 export class AuthApiService {
-  private readonly apiServiceConfig: ApiServiceConfig;
   private apiService: ApiService;
 
-  constructor() {
-    this.apiServiceConfig = {
-      baseUrl: env.API_BASE_URL,
-    };
-    this.apiService = new ApiService(this.apiServiceConfig);
+  constructor(apiService: ApiService) {
+    this.apiService = apiService;
   }
 
-  async signupUser(
-    signupRequestPayload: any,
-  ): Promise<NextResponse<SignupResponse>> {
-    try {
-      const response = await this.apiService.post<
-        any,
-        NextResponse<SignupResponse>
-      >(env.AUTH_SIGNUP_USER, signupRequestPayload);
-
-      return response;
-    } catch (ex: unknown) {
-      console.log("User register failed: ", ex);
-      throw ex;
-    }
+  async sendVerificationEmail(payload: {
+    email: string;
+    name: string;
+  }): Promise<ServerActionResponse> {
+    return this.apiService.post(
+      API_ENDPOINTS.AUTH.SEND_VERIFICATION_EMAIL,
+      payload
+    );
   }
 }

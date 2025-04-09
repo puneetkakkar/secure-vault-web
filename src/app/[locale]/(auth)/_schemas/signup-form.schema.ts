@@ -1,13 +1,9 @@
 import { z } from "zod";
 
 // Create a Zod schema
-export const SignUpFormSchema = z.object({
-  email: z.string().email("Invalid email format").nonempty("Email is required"),
-  fullName: z
-    .string()
-    .min(3, "Full name must be at least 3 characters")
-    .max(50, "Full name cannot exceed 50 characters")
-    .nonempty("Full name is required"),
+export const SignupFormSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  fullName: z.string().min(2, "Name must be at least 2 characters"),
   // masterPassword: z
   //   .string()
   //   .min(8, "Master password must be at least 8 characters")
@@ -35,3 +31,5 @@ export const SignUpFormSchema = z.object({
 //     });
 //   }
 // });
+
+export type SignupFormData = z.infer<typeof SignupFormSchema>;
