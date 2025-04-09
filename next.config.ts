@@ -3,7 +3,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 import "./src/lib/env/env";
 
 const nextConfig: NextConfig = {
-  experimental: { taint: true },
+  experimental: {
+    taint: true,
+  },
 };
 
 const withNextIntl = createNextIntlPlugin();

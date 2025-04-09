@@ -6,11 +6,14 @@ import Image from "next/image";
 import { Controller, useForm } from "react-hook-form";
 import UserOnboardImage from "../../../../../assets/user-onboard.svg";
 
-import { SignUpFormSchema } from "@/app/[locale]/(auth)/_schemas/signup-form.schema";
+import {
+  SignupFormData,
+  SignupFormSchema,
+} from "@/app/[locale]/(auth)/_schemas/signup-form.schema";
 import { Link, useRouter } from "@/i18n/navigation";
+import { serviceFactory } from "@/services/service-factory";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
-import { SignupService } from "../_services/signup.service";
 
 interface IFormInput {
   email: string;
@@ -19,60 +22,51 @@ interface IFormInput {
 }
 
 export default function Signup() {
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const authService = serviceFactory.getAuthService();
 
   const {
     control,
     formState: { errors },
     handleSubmit,
     reset,
-  } = useForm<IFormInput>({
+  } = useForm<SignupFormData>({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
     defaultValues: {
       email: "",
       fullName: "",
-      // masterPassword: "",
-      // confirmMasterPassword: "",
-      // masterPasswordHint: "",
       isAgreed: false,
     },
-    resolver: zodResolver(SignUpFormSchema),
+    resolver: zodResolver(SignupFormSchema),
   });
 
-  const router = useRouter();
-
-  const onSubmit = async ({
-    email,
-    fullName,
-  }: IFormInput) => {
-    try {
-      startTransition(async () => {
-        const signupService = new SignupService();
-        await signupService.signupUser(
-          email,
-          fullName
-        );
+  const onSubmit = async (data: SignupFormData) => {
+    startTransition(async () => {
+      try {
+        const response = await authService.initiateSignup({
+          email: data.email,
+          name: data.fullName,
+        });
 
         addToast({
           variant: "flat",
           color: "secondary",
-          title: "Account created successfully.",
+          title: response?.message,
         });
 
         reset();
-
-        router.push("/email-verification");
-      });
-    } catch (ex: any) {
-      addToast({
-        variant: "flat",
-        color: "danger",
-        title: "Error",
-        description: ex?.message ?? "Something went wrong",
-      });
-      return;
-    }
+        router.push("/verify-email");
+      } catch (error: any) {
+        addToast({
+          variant: "flat",
+          color: "danger",
+          title: "Error",
+          description: error?.message ?? "Something went wrong",
+        });
+      }
+    });
   };
 
   return (
@@ -112,52 +106,6 @@ export default function Signup() {
               />
             )}
           />
-          {/*<div className="flex flex-row justify-between w-">*/}
-          {/*  <Controller*/}
-          {/*    name="masterPassword"*/}
-          {/*    control={control}*/}
-          {/*    render={({ field }) => (*/}
-          {/*      <TextInput*/}
-          {/*        label="Master Password"*/}
-          {/*        type="password"*/}
-          {/*        labelPlacement="inside"*/}
-          {/*        errorMessage={errors.masterPassword?.message}*/}
-          {/*        aria-invalid={errors.masterPassword ? "true" : "false"}*/}
-          {/*        customStyles={{ base: "mr-4" }}*/}
-          {/*        {...field}*/}
-          {/*      />*/}
-          {/*    )}*/}
-          {/*  />*/}
-          {/*  <Controller*/}
-          {/*    name="confirmMasterPassword"*/}
-          {/*    control={control}*/}
-          {/*    render={({ field }) => (*/}
-          {/*      <TextInput*/}
-          {/*        label="Confirm Password"*/}
-          {/*        type="password"*/}
-          {/*        labelPlacement="inside"*/}
-          {/*        errorMessage={errors.confirmMasterPassword?.message}*/}
-          {/*        aria-invalid={errors.confirmMasterPassword ? "true" : "false"}*/}
-          {/*        customStyles={{ base: "" }}*/}
-          {/*        {...field}*/}
-          {/*      />*/}
-          {/*    )}*/}
-          {/*  />*/}
-          {/*</div>*/}
-          {/*<Controller*/}
-          {/*  name="masterPasswordHint"*/}
-          {/*  control={control}*/}
-          {/*  render={({ field }) => (*/}
-          {/*    <TextInput*/}
-          {/*      label="Master Password Hint"*/}
-          {/*      type="text"*/}
-          {/*      labelPlacement="inside"*/}
-          {/*      errorMessage={errors.masterPasswordHint?.message}*/}
-          {/*      aria-invalid={errors.masterPasswordHint ? "true" : "false"}*/}
-          {/*      {...field}*/}
-          {/*    />*/}
-          {/*  )}*/}
-          {/*/>*/}
           <Controller
             name="isAgreed"
             control={control}
