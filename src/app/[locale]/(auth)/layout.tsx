@@ -16,9 +16,7 @@ export default async function AuthLayout({
   return (
     <div className="relative flex flex-col h-screen">
       <Navbar showAuthButtons={false} />
-      <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-        {children}
-      </main>
+      <main className="container mx-auto max-w-7xl flex-grow">{children}</main>
       <Footer />
     </div>
   );
