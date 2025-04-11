@@ -31,7 +31,7 @@ const EmailVerification = () => {
   const handleResendVerificationLink = () => {
     startTransition(async () => {
       try {
-        const response = await authService.initiateSignup({
+        const response = await authService.initiateRegistration({
           email,
           name,
         });
