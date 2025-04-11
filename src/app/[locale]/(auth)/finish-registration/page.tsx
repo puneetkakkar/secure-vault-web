@@ -75,14 +75,14 @@ export default function FinishRegistration() {
 
   return (
     <section className="flex flex-col mt-16 mx-6 lg:flex-row items-center lg:items-start justify-between gap-4 sm:py-8 md:py-10">
-      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 lg:mr-24 border rounded-3xl border-primary-100 w-full md:w-8/12 lg:w-6/12 transition-all duration-50 ease-quick-in-out">
+      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 lg:mr-24 border rounded-3xl border-primary-500/30 dark:border-secondary-500/30 w-full md:w-8/12 lg:w-6/12 transition-all duration-50 ease-quick-in-out">
         <h2 className="absolute flex -top-0.5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <span className="bg-background px-4 text-lg sm:text-2xl font-semibold uppercase whitespace-nowrap">
             {t("title")}
           </span>
         </h2>
 
-        <p className="text-center text-default-600 text-sm mb-6 animate-fade-in bg-warning-50 border border-warning-200 rounded-lg p-3 text-warning-700 font-medium">
+        <p className="text-center text-warning-700 text-sm mb-6 animate-fade-in bg-warning-50 border border-warning-200 rounded-lg p-3 font-medium">
           {t("description")}
         </p>
 
@@ -101,7 +101,10 @@ export default function FinishRegistration() {
                   labelPlacement="inside"
                   errorMessage={errors.masterPassword?.message}
                   aria-invalid={errors.masterPassword ? "true" : "false"}
-                  customStyles={{ base: "mr-4" }}
+                  customStyles={{
+                    base: "mr-4",
+                    inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
+                  }}
                   {...field}
                 />
                 <div className="mt-2 h-1 w-full bg-gray-200 rounded-full overflow-hidden">
@@ -119,7 +122,7 @@ export default function FinishRegistration() {
                     }`}
                   />
                 </div>
-                <p className="text-xs text-default-500 mt-1">
+                <p className="text-xs text-primary-500 dark:text-secondary-500 mt-1">
                   {`Password Strength: ${passwordStrength}%`}
                 </p>
               </div>
@@ -137,7 +140,10 @@ export default function FinishRegistration() {
                   labelPlacement="inside"
                   errorMessage={errors.confirmPassword?.message}
                   aria-invalid={errors.confirmPassword ? "true" : "false"}
-                  customStyles={{ base: "mr-4" }}
+                  customStyles={{
+                    base: "mr-4",
+                    inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
+                  }}
                   {...field}
                 />
               </div>
@@ -153,22 +159,27 @@ export default function FinishRegistration() {
                   label={t("masterPasswordHint")}
                   type="text"
                   labelPlacement="inside"
-                  customStyles={{ base: "mr-4" }}
+                  customStyles={{
+                    base: "mr-4",
+                    inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
+                  }}
                   {...field}
                 />
               </div>
             )}
           />
 
-          <Button
-            type="submit"
-            color="primary"
-            className="w-full py-3 text-base font-semibold mt-4 animate-slide-in-up delay-600 transition-all duration-50 ease-quick-in-out hover:scale-[1.02] active:scale-[0.98]"
-            variant="solid"
-            isLoading={isSubmitting}
-          >
-            {t("submit")}
-          </Button>
+          <div className="flex flex-col items-start justify-center my-4">
+            <Button
+              type="submit"
+              color="primary"
+              className="w-full py-3 text-base font-semibold dark:text-secondary mt-4 animate-slide-in-up delay-600 transition-all duration-50 ease-quick-in-out hover:scale-[1.02] active:scale-[0.98]"
+              variant="solid"
+              isLoading={isSubmitting}
+            >
+              {t("submit")}
+            </Button>
+          </div>
         </form>
       </div>
 

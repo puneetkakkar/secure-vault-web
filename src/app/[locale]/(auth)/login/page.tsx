@@ -30,7 +30,7 @@ export default function Login() {
 
   return (
     <section className="flex flex-col mt-16 mx-6 lg:flex-row items-center lg:items-start justify-between gap-4 sm:py-8 md:py-10">
-      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 lg:mr-24 border rounded-3xl border-primary-800/30 w-full md:w-8/12 lg:w-6/12 transition-all duration-50 ease-quick-in-out">
+      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 lg:mr-24 border rounded-3xl border-primary-500/30 dark:border-secondary-500/30 w-full md:w-8/12 lg:w-6/12 transition-all duration-50 ease-quick-in-out">
         <h2 className="absolute flex -top-0.5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <span className="bg-background px-4 text-lg sm:text-2xl font-semibold uppercase whitespace-nowrap">
             {t("title")}
@@ -54,7 +54,7 @@ export default function Login() {
                   aria-invalid={errors.email ? "true" : "false"}
                   customStyles={{
                     base: "mr-4",
-                    inputWrapper: "bg-primary-300/20",
+                    inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
                   }}
                   {...field}
                   variant="flat"
@@ -76,7 +76,7 @@ export default function Login() {
                   aria-invalid={errors.masterPassword ? "true" : "false"}
                   customStyles={{
                     base: "mr-4",
-                    inputWrapper: "bg-primary-300/20",
+                    inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
                   }}
                   {...field}
                 />
@@ -84,7 +84,10 @@ export default function Login() {
             )}
           />
 
-          <Checkbox color="primary" className="">
+          <Checkbox
+            color="primary"
+            classNames={{ icon: "dark:text-secondary" }}
+          >
             <span className="text-sm sm:text-[1rem]">Keep me logged in</span>
           </Checkbox>
 
@@ -92,14 +95,17 @@ export default function Login() {
             <Button
               type="submit"
               color="primary"
-              className="w-full py-3 text-base font-semibold animate-slide-in-up delay-600 transition-all duration-50 ease-quick-in-out hover:scale-[1.02] active:scale-[0.98]"
+              className="w-full py-3 text-base font-semibold dark:text-secondary animate-slide-in-up delay-600 transition-all duration-50 ease-quick-in-out hover:scale-[1.02] active:scale-[0.98]"
               variant="solid"
             >
               {t("submit")}
             </Button>
-            <div className="mt-4 text-sm sm:text-[1rem] animate-fade-in text-center">
+            <div className="mt-4 text-sm sm:text-[1rem] animate-fade-in text-center dark:text-primary-200">
               {t("registerPrompt")}{" "}
-              <Link href={"/register"} className="text-primary font-medium">
+              <Link
+                href={"/register"}
+                className="text-primary dark:text-primary font-medium"
+              >
                 {t("registerLink")}
               </Link>
             </div>

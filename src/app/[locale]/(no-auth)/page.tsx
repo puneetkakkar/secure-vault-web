@@ -53,11 +53,9 @@ export default function Home() {
                 color="primary"
                 variant="shadow"
                 size="md"
-                className="w-full py-6 sm:py-0 sm:w-1/2 px-6 font-medium transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group"
+                className="w-full py-6 sm:py-0 sm:w-1/2 px-6 font-medium dark:text-secondary transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden group"
               >
-                <span className="relative z-10 dark:text-secondary">
-                  {t("getStarted")}
-                </span>
+                {t("getStarted")}
               </Button>
               <Button
                 as={Link}
@@ -391,7 +389,7 @@ export default function Home() {
 
             {/* Product Features */}
             <div className="flex flex-wrap justify-center gap-4 mb-6">
-              <div className="flex items-center space-x-3 bg-secondary-50/70 dark:bg-secondary-400/20 px-4 py-2 rounded-lg border border-secondary-100/50 dark:border-secondary-200/20 hover:scale-[1.02] transition-transform duration-300">
+              <div className="flex items-center space-x-3 bg-secondary-200/70 dark:bg-secondary-400/20 px-4 py-2 rounded-lg border border-secondary-100/50 dark:border-secondary-200/20 hover:scale-[1.02] transition-transform duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-secondary-600 dark:text-primary-400"
@@ -410,7 +408,7 @@ export default function Home() {
                   Zero-Knowledge Encryption
                 </span>
               </div>
-              <div className="flex items-center space-x-3 bg-secondary-50/70 dark:bg-secondary-400/20 px-4 py-2 rounded-lg border border-secondary-100/50 dark:border-secondary-200/20 hover:scale-[1.02] transition-transform duration-300">
+              <div className="flex items-center space-x-3 bg-secondary-200/70 dark:bg-secondary-400/20 px-4 py-2 rounded-lg border border-secondary-100/50 dark:border-secondary-200/20 hover:scale-[1.02] transition-transform duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-secondary-600 dark:text-primary-400"
@@ -429,7 +427,7 @@ export default function Home() {
                   Military-Grade Security
                 </span>
               </div>
-              <div className="flex items-center space-x-3 bg-secondary-50/70 dark:bg-secondary-400/20 px-4 py-2 rounded-lg border border-secondary-100/50 dark:border-secondary-200/20 hover:scale-[1.02] transition-transform duration-300">
+              <div className="flex items-center space-x-3 bg-secondary-200/70 dark:bg-secondary-400/20 px-4 py-2 rounded-lg border border-secondary-100/50 dark:border-secondary-200/20 hover:scale-[1.02] transition-transform duration-300">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-secondary-600 dark:text-primary-400"
