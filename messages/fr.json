@@ -1,0 +1,81 @@
+{
+  "RootLayout": {
+    "home_link": "Accueil"
+  },
+  "NotFound": {
+    "couldnt_find_resource": "Impossible de trouver la ressource demandée",
+    "return_home": "Retour à l'accueil"
+  },
+  "FinishRegistration": {
+    "title": "Définissez Votre Mot de Passe Principal",
+    "description": "Votre mot de passe principal est la clé de votre coffre-fort sécurisé. Il est crucial de définir un mot de passe fort que vous seul connaissez. Ce mot de passe ne peut pas être récupéré s'il est perdu, alors choisissez-le soigneusement.",
+    "masterPassword": "Mot de Passe Principal",
+    "masterPasswordPlaceholder": "Entrez un mot de passe fort",
+    "confirmPassword": "Confirmez le Mot de Passe", 
+    "confirmPasswordPlaceholder": "Ressaisissez votre mot de passe",
+    "submit": "Enregistrer le Mot de Passe Principal",
+    "passwordLengthError": "Le mot de passe doit comporter au moins 12 caractères",
+    "passwordMismatchError": "Les mots de passe ne correspondent pas",
+    "hide": "Masquer",
+    "show": "Afficher"
+  },
+  "Register": {
+    "title": "Créez Votre Compte",
+    "email": "Adresse E-mail",
+    "emailPlaceholder": "Entrez votre e-mail",
+    "fullName": "Nom Complet",
+    "fullNamePlaceholder": "Entrez votre nom complet",
+    "agreeTerms": "J'accepte les Conditions d'Utilisation et la Politique de Confidentialité",
+    "submit": "Continuer l'Inscription"
+  },
+  "Login": {
+    "title": "Bon Retour",
+    "email": "Adresse E-mail",
+    "emailPlaceholder": "Entrez votre e-mail",
+    "password": "Mot de Passe",
+    "passwordPlaceholder": "Entrez votre mot de passe",
+    "forgotPassword": "Mot de Passe Oublié ?",
+    "submit": "Se Connecter"
+  },
+  "Home": {
+    "secureVaultBadge": "Sécurisez Votre Vie Numérique",
+    "heroTitle1": "Protégez Vos",
+    "heroTitle2": "Mots de Passe",
+    "heroTitleRest": "Avec une Sécurité Inviolable",
+    "heroSubtitle": "Gestionnaire de mots de passe chiffré de bout en bout qui vous donne un contrôle total sur votre sécurité numérique",
+    "getStarted": "Commencer",
+    "signIn": "Se Connecter",
+    "trustIndicators": {
+      "endToEndEncrypted": "Chiffré de bout en bout",
+      "zeroKnowledge": "Zéro connaissance",
+      "openSource": "Open source"
+    },
+    "scrollIndicator": "Explorer"
+  },
+  "Footer": {
+    "footerDescription": "SecureVault est votre partenaire de confiance en sécurité numérique, offrant une gestion de mots de passe de pointe avec une confidentialité sans compromis",
+    "stayUpdated": "Restez Informé",
+    "subscribe": "S'abonner",
+    "quickLinks": "Liens Rapides",
+    "resources": "Ressources",
+    "legal": "Légal",
+    "blog": "Blog",
+    "helpCenter": "Centre d'Aide",
+    "security": "Sécurité",
+    "privacyPolicy": "Politique de Confidentialité",
+    "termsOfService": "Conditions d'Utilisation",
+    "compliance": "Conformité",
+    "socialLinks": {
+      "twitter": "Twitter",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    },
+    "copyright": " {year} SecureVault. Tous droits réservés.",
+    "companyName1": "SECURE",
+    "companyName2": "VAULT",
+    "enterYourEmail": "Entrez votre e-mail",
+    "about": "À Propos",
+    "features": "Fonctionnalités",
+    "pricing": "Tarification"
+  }
+}

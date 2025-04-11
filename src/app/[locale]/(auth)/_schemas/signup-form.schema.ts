@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 // Create a Zod schema
-export const SignupFormSchema = z.object({
+export const InitialRegistrationFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   fullName: z.string().min(2, "Name must be at least 2 characters"),
   // masterPassword: z
@@ -32,4 +32,6 @@ export const SignupFormSchema = z.object({
 //   }
 // });
 
-export type SignupFormData = z.infer<typeof SignupFormSchema>;
+export type InitialRegistrationFormData = z.infer<
+  typeof InitialRegistrationFormSchema
+>;

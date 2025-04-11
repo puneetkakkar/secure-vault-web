@@ -4,7 +4,7 @@ import { ApiError } from "@/types/api";
 import { sendVerificationEmailApiAction } from "../_lib/actions/auth.action";
 
 export class AuthService {
-  async initiateSignup(payload: { email: string; name: string }) {
+  async initiateRegistration(payload: { email: string; name: string }) {
     const result = await sendVerificationEmailApiAction(payload);
 
     if (!result.success) {
