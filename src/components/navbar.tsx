@@ -67,7 +67,7 @@ export const Navbar = ({
                 href="/login"
                 color="primary"
                 variant="flat"
-                className="font-normal font-josefin text-primary"
+                className="font-josefinfont-semibold text-primary dark:text-primary dark:bg-secondary-600/30"
               >
                 Login
               </Button>
@@ -76,8 +76,9 @@ export const Navbar = ({
               <Button
                 as={NextLink}
                 href="/register"
-                className="font-josefin font-normal text-primary-foreground bg-primary"
-                variant="flat"
+                color="primary"
+                className="font-josefin font-semibold dark:text-secondary bg-primary"
+                variant="shadow"
               >
                 Register
               </Button>
