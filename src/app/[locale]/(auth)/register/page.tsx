@@ -42,17 +42,17 @@ export default function Register() {
   const onSubmit = async (data: InitialRegistrationFormData) => {
     startTransition(async () => {
       try {
-        const response = await authService.initiateRegistration({
-          email: data.email,
-          name: data.fullName,
-        });
+        // const response = await authService.initiateRegistration({
+        //   email: data.email,
+        //   name: data.fullName,
+        // });
 
-        addToast({
-          variant: "flat",
-          color: "success",
-          title: t("registrationSuccess"),
-          description: response?.message,
-        });
+        // addToast({
+        //   variant: "flat",
+        //   color: "success",
+        //   title: t("registrationSuccess"),
+        //   description: response?.message,
+        // });
 
         reset();
 
@@ -73,7 +73,7 @@ export default function Register() {
 
   return (
     <section className="flex flex-col mt-16 mx-6 lg:flex-row items-center lg:items-start justify-between gap-4 sm:py-8 md:py-10">
-      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 lg:mr-24 border rounded-3xl border-primary-100 w-full md:w-8/12 lg:w-6/12 transition-all duration-50 ease-quick-in-out">
+      <div className="flex-1 relative px-4 py-4 mb-4 sm:px-14 sm:py-10 lg:mr-24 border rounded-3xl border-primary-500/30 dark:border-secondary-500/30 w-full md:w-8/12 lg:w-6/12 transition-all duration-50 ease-quick-in-out">
         <h2 className="absolute flex -top-0.5 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <span className="bg-background px-4 text-lg sm:text-2xl font-semibold uppercase whitespace-nowrap">
             {t("title")}
@@ -95,7 +95,10 @@ export default function Register() {
                   labelPlacement="inside"
                   errorMessage={errors.email?.message}
                   aria-invalid={errors.email ? "true" : "false"}
-                  customStyles={{ base: "mr-4" }}
+                  customStyles={{
+                    base: "mr-4",
+                    inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
+                  }}
                   {...field}
                 />
               </div>
@@ -113,7 +116,10 @@ export default function Register() {
                   labelPlacement="inside"
                   errorMessage={errors.fullName?.message}
                   aria-invalid={errors.fullName ? "true" : "false"}
-                  customStyles={{ base: "mr-4" }}
+                  customStyles={{
+                    base: "mr-4",
+                    inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
+                  }}
                   {...field}
                 />
               </div>
@@ -124,9 +130,10 @@ export default function Register() {
             name="isAgreed"
             control={control}
             render={({ field: { onChange, value } }) => (
-              <div className="animate-slide-in-up delay-500">
+              <div className="animate-slide-in-up delay-500 pt-2">
                 <Checkbox
                   color="primary"
+                  classNames={{ icon: "dark:text-secondary" }}
                   onChange={onChange}
                   isSelected={value}
                 >
@@ -143,21 +150,23 @@ export default function Register() {
             )}
           />
 
-          <Button
-            type="submit"
-            color="primary"
-            className="w-full py-3 text-base font-semibold mt-4 animate-slide-in-up delay-600 transition-all duration-50 ease-quick-in-out hover:scale-[1.02] active:scale-[0.98]"
-            variant="solid"
-            isLoading={isPending}
-          >
-            {t("submit")}
-          </Button>
+          <div className="flex flex-col items-start justify-center my-4">
+            <Button
+              type="submit"
+              color="primary"
+              className="w-full py-3 text-base font-semibold dark:text-secondary mt-4 animate-slide-in-up delay-600 transition-all duration-50 ease-quick-in-out hover:scale-[1.02] active:scale-[0.98]"
+              variant="solid"
+              isLoading={isPending}
+            >
+              {t("submit")}
+            </Button>
 
-          <div className="mt-4 text-sm sm:text-[1rem] animate-fade-in text-center">
-            {t("loginPrompt")}{" "}
-            <Link href={"/login"} className="text-primary font-medium">
-              {t("loginLink")}
-            </Link>
+            <div className="mt-4 text-sm sm:text-[1rem] dark:text-primary-200 animate-fade-in text-center">
+              {t("loginPrompt")}{" "}
+              <Link href={"/login"} className="text-primary dark:text-primary font-medium">
+                {t("loginLink")}
+              </Link>
+            </div>
           </div>
         </form>
       </div>

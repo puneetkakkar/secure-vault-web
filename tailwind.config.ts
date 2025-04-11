@@ -128,7 +128,7 @@ const config: Config = {
               "800": "#4A0CD4",
               "900": "#3908A9",
               DEFAULT: "#5E17EB",
-              foreground: "#FFFFFF",
+              foreground: "#000000",
             },
             primary: {
               "50": "#F8F5FF",

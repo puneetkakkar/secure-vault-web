@@ -54,17 +54,21 @@ const EmailVerification = () => {
 
   if (isPageLoading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <Spinner classNames={{ wrapper: "w-24 h-24" }} />
+      <div className="flex items-center justify-center mt-16 mx-6 py-4 px-1 sm:px-6 lg:px-8 h-[80vh]">
+        <Spinner
+          classNames={{ wrapper: "w-24 h-24" }}
+          variant="dots"
+          color="primary"
+        />
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-center mt-16 mx-6 py-4 px-1 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-center mt-16 mx-6 py-4 px-1 sm:px-6 lg:px-8 h-[80vh]">
       <div className="max-w-md md:max-w-2xl w-full">
-        <div className="p-8 rounded-lg border border-primary-100">
-          <div className="text-center flex flex-col items-center">
+        <div className="p-8 rounded-lg border border-primary-500/30 dark:border-secondary-500/30 animate-fade-in delay-100">
+          <div className="text-center flex flex-col items-center animate-slide-in-up delay-100">
             <h2 className="font-josefin text-3xl font-bold text-foreground">
               Verify your email
             </h2>
@@ -74,18 +78,20 @@ const EmailVerification = () => {
               width={200}
               className="my-4 md:my-8"
             />
-            <p className="font-josefin mt-2 text-lg text-default-600">
+            <p className="font-josefin mt-2 text-lg text-secondary-500 dark:text-primary-600">
               Almost there! We’ve sent a verification email to link to your{" "}
-              <strong>{email}</strong>. You need to verify your email address to
-              log into Secure Vault.
+              <strong className="text-primary-500 dark:text-secondary-500">
+                {email}
+              </strong>
+              . You need to verify your email address to log into Secure Vault.
             </p>
           </div>
 
-          <div className="flex flex-col items-center justify-center text-center mt-6">
+          <div className="flex flex-col items-center justify-center text-center mt-6 animate-slide-in-up delay-200">
             <Button
               variant={"flat"}
               color={"primary"}
-              className="font-josefin text-sm text-primary"
+              className="font-josefin text-sm text-primary dark:text-primary dark:bg-secondary-600/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               onPress={handleResendVerificationLink}
               isLoading={isPending}
             >

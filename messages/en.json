@@ -8,7 +8,7 @@
   },
   "FinishRegistration": {
     "title": "Set Your Master Password",
-    "description": " Critical: Your master password cannot be recovered. Choose wisely and keep it secret.",
+    "description": "Critical: Your master password cannot be recovered. Choose wisely and keep it secret.",
     "masterPassword": "Master Password",
     "masterPasswordPlaceholder": "Enter a strong password",
     "confirmPassword": "Confirm Master Password",
