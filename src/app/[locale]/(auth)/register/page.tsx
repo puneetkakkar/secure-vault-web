@@ -36,23 +36,23 @@ export default function Register() {
       fullName: "",
       isAgreed: false,
     },
-    resolver: zodResolver(InitialRegistrationFormSchema),
+    resolver: zodResolver(InitialRegistrationFormSchema(t)),
   });
 
   const onSubmit = async (data: InitialRegistrationFormData) => {
     startTransition(async () => {
       try {
-        // const response = await authService.initiateRegistration({
-        //   email: data.email,
-        //   name: data.fullName,
-        // });
+        const response = await authService.initiateRegistration({
+          email: data.email,
+          name: data.fullName,
+        });
 
-        // addToast({
-        //   variant: "flat",
-        //   color: "success",
-        //   title: t("registrationSuccess"),
-        //   description: response?.message,
-        // });
+        addToast({
+          variant: "flat",
+          color: "success",
+          title: t("registrationSuccess"),
+          description: response?.message,
+        });
 
         reset();
 
@@ -163,7 +163,10 @@ export default function Register() {
 
             <div className="mt-4 text-sm sm:text-[1rem] dark:text-primary-200 animate-fade-in text-center">
               {t("loginPrompt")}{" "}
-              <Link href={"/login"} className="text-primary dark:text-primary font-medium">
+              <Link
+                href={"/login"}
+                className="text-primary dark:text-primary font-medium"
+              >
                 {t("loginLink")}
               </Link>
             </div>

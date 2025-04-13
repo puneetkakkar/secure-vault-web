@@ -2,7 +2,7 @@
 
 import { CryptoService as CryptoServiceAbstraction } from "@/abstractions/crypto";
 import { PBKDF2Config } from "@/config/pbkdf";
-import { HashPurpose } from "@/enums/hash-purpose";
+import { HashPurpose } from "@/enums/hash-purpose.enum";
 import { EncString } from "@/models/enc-string";
 import { SymmetricCryptoKey } from "@/models/symmetric-crypto-key";
 import { MasterKey, UserKey } from "@/types/key";
@@ -10,6 +10,7 @@ import { Utils } from "@/utils";
 import { CryptoFunctionService } from "./crypto-function.service";
 import { EncryptService } from "./encrypt.service";
 import { KeyGenerationService } from "./key-generation.service";
+import { serviceFactory } from "./service-factory";
 
 export class CryptoService implements CryptoServiceAbstraction {
   private keyGenerationService: KeyGenerationService;
@@ -17,14 +18,14 @@ export class CryptoService implements CryptoServiceAbstraction {
   private cryptoFunctionService: CryptoFunctionService;
 
   constructor() {
-    this.keyGenerationService = new KeyGenerationService();
-    this.encryptService = new EncryptService();
-    this.cryptoFunctionService = new CryptoFunctionService(window);
+    this.keyGenerationService = serviceFactory.getKeyGenerationService();
+    this.encryptService = serviceFactory.getEncryptService();
+    this.cryptoFunctionService = serviceFactory.getCryptoFunctionService();
   }
 
   private async buildProtectedSymmetricKey<T extends SymmetricCryptoKey>(
     encryptionKey: SymmetricCryptoKey,
-    newSymKey: Uint8Array,
+    newSymKey: Uint8Array
   ): Promise<[T, EncString]> {
     let protectedSymKey: EncString;
     if (encryptionKey.key.byteLength === 32) {
@@ -32,12 +33,12 @@ export class CryptoService implements CryptoServiceAbstraction {
         await this.keyGenerationService.stretchKey(encryptionKey);
       protectedSymKey = await this.encryptService.encrypt(
         newSymKey,
-        stretchedEncryptionKey,
+        stretchedEncryptionKey
       );
     } else if (encryptionKey.key.byteLength === 64) {
       protectedSymKey = await this.encryptService.encrypt(
         newSymKey,
-        encryptionKey,
+        encryptionKey
       );
     } else {
       throw new Error("Invalid key size.");
@@ -49,12 +50,12 @@ export class CryptoService implements CryptoServiceAbstraction {
   async makeMasterKey(
     password: string,
     email: string,
-    pbkdf2Config: PBKDF2Config,
+    pbkdf2Config: PBKDF2Config
   ): Promise<MasterKey> {
     return (await this.keyGenerationService.deriveKeyFromPassword(
       password,
       email,
-      pbkdf2Config,
+      pbkdf2Config
     )) as MasterKey;
   }
 
@@ -71,8 +72,8 @@ export class CryptoService implements CryptoServiceAbstraction {
   async hashMasterKey(
     password: string,
     key: MasterKey,
-    hashPurpose?: HashPurpose,
-  ): Promise<string | null> {
+    hashPurpose?: HashPurpose
+  ): Promise<string> {
     if (password == null || key == null) {
       throw new Error("Invalid parameters.");
     }
@@ -82,9 +83,15 @@ export class CryptoService implements CryptoServiceAbstraction {
       key.key,
       password,
       "sha256",
-      iterations,
+      iterations
     );
 
-    return Utils.fromBufferToB64(hash);
+    const hashString = Utils.fromBufferToB64(hash.buffer as ArrayBuffer);
+
+    if (hashString == null) {
+      throw new Error("Master key hash could not be created");
+    }
+
+    return hashString;
   }
 }

@@ -55,7 +55,7 @@ export class ApiService {
       }
 
       return {
-        data: responseData.data as T,
+        data: (responseData.data ?? null) as T,
         status: response.status,
         message: responseData.message,
       } as ApiResponse<T>;

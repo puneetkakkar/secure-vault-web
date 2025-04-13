@@ -1,4 +1,4 @@
-import { EncryptionType } from "@/enums/encryption-type";
+import { EncryptionType } from "@/enums/encryption-type.enum";
 
 export interface Encrypted {
   encryptionType?: EncryptionType;

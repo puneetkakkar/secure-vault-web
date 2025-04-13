@@ -43,9 +43,9 @@ export default function Footer() {
                 <input
                   type="email"
                   placeholder={t("enterYourEmail")}
-                  className="flex-grow px-3 py-2 text-sm border border-secondary-200/10 dark:border-secondary-200/10 rounded-l-md bg-secondary-400/10 dark:bg-primary-200/10 focus:outline-none"
+                  className="flex w-2/3 px-3 py-2 text-sm border border-secondary-200/10 dark:border-secondary-200/10 rounded-l-md bg-secondary-400/10 dark:bg-primary-200/10 focus:outline-none"
                 />
-                <button className="px-4 py-2 bg-primary dark:bg-primary text-primary-foreground dark:text-secondary-400 text-sm rounded-r-md dark:hover:bg-primary/90 transition-colors">
+                <button className="w-1/3 px-4 py-2 bg-primary dark:bg-primary text-primary-foreground dark:text-secondary-400 text-sm rounded-r-md dark:hover:bg-primary/90 transition-colors">
                   {t("subscribe")}
                 </button>
               </div>

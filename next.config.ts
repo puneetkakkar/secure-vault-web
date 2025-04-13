@@ -3,6 +3,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 import "./src/lib/env/env";
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   experimental: {
     taint: true,
   },
