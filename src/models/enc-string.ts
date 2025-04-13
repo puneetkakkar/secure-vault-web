@@ -1,4 +1,4 @@
-import { EncryptionType } from "@/enums/encryption-type";
+import { EncryptionType } from "@/enums/encryption-type.enum";
 import { Encrypted } from "@/interfaces/encrypted";
 import { EncryptedString } from "@/types";
 import { Utils } from "@/utils";

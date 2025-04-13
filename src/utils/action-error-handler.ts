@@ -18,7 +18,7 @@ export type ActionResult<TData = void> =
   | {
       success: true;
       status: number;
-      data?: TData;
+      data: TData;
       message?: string;
     }
   | {

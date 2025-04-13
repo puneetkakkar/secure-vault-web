@@ -3,12 +3,21 @@ import { AuthService } from "@/app/[locale]/(auth)/_services/auth.service";
 import { env } from "@/lib/env/env";
 import { ApiConfig } from "@/types/api";
 import { ApiService } from "./api.service";
+import { CryptoFunctionService } from "./crypto-function.service";
+import { CryptoService } from "./crypto.service";
+import { EncryptService } from "./encrypt.service";
+import { KeyGenerationService } from "./key-generation.service";
 
 class ServiceFactory {
   private static instance: ServiceFactory;
   private apiService: ApiService | null = null;
   private authService: AuthService | null = null;
   private authApiService: AuthApiService | null = null;
+  private cryptoService: CryptoService | null = null;
+  private encryptService: EncryptService | null = null;
+  private keyGenerationService: KeyGenerationService | null = null;
+  private cryptoFunctionService: CryptoFunctionService | null = null;
+
   private constructor() {}
 
   static getInstance(): ServiceFactory {
@@ -30,6 +39,34 @@ class ServiceFactory {
       this.authApiService = new AuthApiService(this.getApiService());
     }
     return this.authApiService;
+  }
+
+  getCryptoService(): CryptoService {
+    if (!this.cryptoService) {
+      this.cryptoService = new CryptoService();
+    }
+    return this.cryptoService;
+  }
+
+  getEncryptService(): EncryptService {
+    if (!this.encryptService) {
+      this.encryptService = new EncryptService();
+    }
+    return this.encryptService;
+  }
+
+  getKeyGenerationService(): KeyGenerationService {
+    if (!this.keyGenerationService) {
+      this.keyGenerationService = new KeyGenerationService();
+    }
+    return this.keyGenerationService;
+  }
+
+  getCryptoFunctionService(): CryptoFunctionService {
+    if (!this.cryptoFunctionService) {
+      this.cryptoFunctionService = new CryptoFunctionService();
+    }
+    return this.cryptoFunctionService;
   }
 
   private getApiService(): ApiService {

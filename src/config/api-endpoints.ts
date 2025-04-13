@@ -1,8 +1,9 @@
 export const API_ENDPOINTS = {
   AUTH: {
     SEND_VERIFICATION_EMAIL: "/v1/auth/send-email-verification",
+    VERIFY_EMAIL: "/v1/auth/verify-email",
+    FINISH_REGISTRATION: "/v1/auth/finish-registration",
     LOGIN: "/v1/auth/login",
-    REGISTER: "/v1/auth/register",
     LOGOUT: "/v1/auth/logout",
     REFRESH_TOKEN: "/v1/auth/refresh-token",
   },

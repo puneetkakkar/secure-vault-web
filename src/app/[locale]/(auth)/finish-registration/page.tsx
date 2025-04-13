@@ -1,77 +1,190 @@
 "use client";
 
-import UserOnboardImage from "../../../../../assets/user-onboard.svg";
-import { Button } from "@heroui/react";
-import { useTranslations } from "next-intl";
-import { useState, useEffect, useMemo } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import Image from "next/image";
+import {
+  FinishRegistrationFormData,
+  FinishRegistrationFormSchema,
+} from "@/app/[locale]/(auth)/_schemas/finish-registration-form.schema";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 import TextInput from "@/components/text-input";
+import { SessionStorageKey } from "@/enums/storage.enum";
+import { useClientServiceFactory } from "@/hooks/use-client-service";
+import { useRouter } from "@/i18n/navigation";
+import { serviceFactory } from "@/services/service-factory";
+import { addToast, Button, Spinner } from "@heroui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState, useTransition } from "react";
+import { Controller, useForm } from "react-hook-form";
+import UserOnboardImage from "../../../../../assets/user-onboard.svg";
+
+const calculatePasswordStrength = (password: string): number => {
+  let strength = 0;
+  if (password.length >= 12) strength += 25;
+  if (/[A-Z]/.test(password)) strength += 25;
+  if (/[0-9]/.test(password)) strength += 25;
+  if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength += 25;
+  return strength;
+};
+
+const getPasswordStrengthColor = (strength: number): string => {
+  if (strength < 25) return "danger";
+  if (strength < 50) return "warning";
+  if (strength < 75) return "primary";
+  return "success";
+};
 
 export default function FinishRegistration() {
   const t = useTranslations("FinishRegistration");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [isPageLoading, setPageLoading] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const [isRegistrationPending, startRegistrationTransition] = useTransition();
+  const authService = serviceFactory.getAuthService();
+  const clientServiceFactory = useClientServiceFactory();
+  const storageService = clientServiceFactory.getSessionStorageService();
 
-  const MasterPasswordSchema = z
-    .object({
-      masterPassword: z.string().min(12, t("passwordLengthError")),
-      confirmPassword: z.string(),
-      masterPasswordHint: z.string().optional(),
-    })
-    .refine((data) => data.masterPassword === data.confirmPassword, {
-      message: t("passwordMismatchError"),
-      path: ["confirmPassword"],
-    });
-
-  type MasterPasswordFormData = z.infer<typeof MasterPasswordSchema>;
+  const token = searchParams.get("token");
+  const email = searchParams.get("email");
 
   const {
     control,
     handleSubmit,
+    reset,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<MasterPasswordFormData>({
-    resolver: zodResolver(MasterPasswordSchema),
+  } = useForm<FinishRegistrationFormData>({
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
     defaultValues: {
       masterPassword: "",
-      confirmPassword: "",
+      confirmMasterPassword: "",
       masterPasswordHint: "",
     },
+    resolver: zodResolver(FinishRegistrationFormSchema(t)),
   });
+
+  useEffect(() => {
+    if (!email || !token) {
+      // Handle the case where email or token is not provided
+      router.replace("/");
+    }
+
+    verifyEmail();
+  }, [token, email]);
 
   const masterPassword = watch("masterPassword");
 
-  // Password strength calculation
-  useEffect(() => {
-    let strength = 0;
-    if (masterPassword.length >= 12) strength += 25;
-    if (/[A-Z]/.test(masterPassword)) strength += 25;
-    if (/[0-9]/.test(masterPassword)) strength += 25;
-    if (/[!@#$%^&*(),.?":{}|<>]/.test(masterPassword)) strength += 25;
-
+  const passwordStrengthColor = useMemo(() => {
+    const strength = calculatePasswordStrength(masterPassword);
     setPasswordStrength(strength);
+    return getPasswordStrengthColor(strength);
   }, [masterPassword]);
 
-  const passwordStrengthColor = useMemo(() => {
-    if (passwordStrength < 25) return "danger";
-    if (passwordStrength < 50) return "warning";
-    if (passwordStrength < 75) return "primary";
-    return "success";
-  }, [passwordStrength]);
-
-  const onSubmit = async (data: MasterPasswordFormData) => {
+  const verifyEmail = async () => {
     try {
-      // Simulate async operation
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      console.log("Master password set", data);
-      // TODO: Implement actual password submission logic
-    } catch (error) {
-      console.error("Password submission failed", error);
+      const response = await authService.verifyEmail({
+        token: token!,
+        email: email!,
+      });
+
+      addToast({
+        variant: "flat",
+        color: "secondary",
+        title: response?.message,
+      });
+      setPageLoading(false);
+    } catch (error: any) {
+      addToast({
+        variant: "flat",
+        color: "danger",
+        title: error.message,
+      });
+      setPageLoading(false);
     }
   };
+
+  const loginUser = async (data: FinishRegistrationFormData) => {
+    try {
+      const response = await authService.login({
+        email: email!,
+        masterPassword: data.masterPassword,
+        rememberMe: false,
+      });
+
+      const responseData = response.data;
+
+      if (storageService && responseData) {
+        storageService.set(SessionStorageKey.ACCESS_TOKEN, responseData.token);
+        router.replace("/vault");
+      }
+
+      setPageLoading(false);
+    } catch (error: any) {
+      router.replace("/login");
+      addToast({
+        variant: "flat",
+        color: "danger",
+        title: error.message,
+      });
+      setPageLoading(false);
+    }
+  };
+
+  const onSubmit = async (data: FinishRegistrationFormData) => {
+    if (!email) {
+      addToast({
+        title: t("emailRequired"),
+        variant: "flat",
+        color: "danger",
+      });
+      return;
+    }
+
+    startRegistrationTransition(async () => {
+      try {
+        const response = await authService?.finishRegistration?.({
+          email,
+          masterPassword: data.masterPassword,
+          masterPasswordHint: data.masterPasswordHint,
+          hint: data.masterPasswordHint,
+        });
+
+        addToast({
+          title: response?.message,
+          variant: "flat",
+          color: "success",
+        });
+
+        reset();
+        setPageLoading(true);
+        await loginUser(data);
+      } catch (error: any) {
+        addToast({
+          title: error.message,
+          variant: "flat",
+          color: "danger",
+        });
+      }
+    });
+  };
+
+  if (isPageLoading) {
+    return (
+      <div className="flex items-center justify-center mt-16 mx-6 py-4 px-1 sm:px-6 lg:px-8 h-[80vh]">
+        <Spinner
+          classNames={{ wrapper: "w-24 h-24" }}
+          variant="dots"
+          color="primary"
+        />
+      </div>
+    );
+  }
 
   return (
     <section className="flex flex-col mt-16 mx-6 lg:flex-row items-center lg:items-start justify-between gap-4 sm:py-8 md:py-10">
@@ -105,6 +218,19 @@ export default function FinishRegistration() {
                     base: "mr-4",
                     inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
                   }}
+                  endContent={
+                    <Button
+                      isIconOnly
+                      className="bg-transparent dark:bg-transparent focus:outline-none"
+                      onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+                    >
+                      {isPasswordVisible ? (
+                        <EyeSlashFilledIcon className="text-2xl text-primary-400 dark:text-primary-300 pointer-events-none size-6" />
+                      ) : (
+                        <EyeFilledIcon className="text-2xl text-primary-400 dark:text-primary-300 pointer-events-none size-6" />
+                      )}
+                    </Button>
+                  }
                   {...field}
                 />
                 <div className="mt-2 h-1 w-full bg-gray-200 rounded-full overflow-hidden">
@@ -122,28 +248,43 @@ export default function FinishRegistration() {
                     }`}
                   />
                 </div>
-                <p className="text-xs text-primary-500 dark:text-secondary-500 mt-1">
-                  {`Password Strength: ${passwordStrength}%`}
+                <p className={`text-xs text-${passwordStrengthColor} mt-1`}>
+                  {`Password Strength: ${passwordStrength}%`}{" "}
                 </p>
               </div>
             )}
           />
 
           <Controller
-            name="confirmPassword"
+            name="confirmMasterPassword"
             control={control}
             render={({ field, fieldState: { invalid } }) => (
               <div className="animate-slide-in-up delay-100">
                 <TextInput
-                  label={t("confirmPassword")}
-                  type={isPasswordVisible ? "text" : "password"}
+                  label={t("confirmMasterPassword")}
+                  type={isConfirmPasswordVisible ? "text" : "password"}
                   labelPlacement="inside"
-                  errorMessage={errors.confirmPassword?.message}
-                  aria-invalid={errors.confirmPassword ? "true" : "false"}
+                  errorMessage={errors.confirmMasterPassword?.message}
+                  aria-invalid={errors.confirmMasterPassword ? "true" : "false"}
                   customStyles={{
                     base: "mr-4",
                     inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
                   }}
+                  endContent={
+                    <Button
+                      isIconOnly
+                      className="bg-transparent dark:bg-transparent focus:outline-none"
+                      onPress={() =>
+                        setIsConfirmPasswordVisible(!isConfirmPasswordVisible)
+                      }
+                    >
+                      {isConfirmPasswordVisible ? (
+                        <EyeSlashFilledIcon className="text-primary-400 dark:text-primary-300 pointer-events-none size-6" />
+                      ) : (
+                        <EyeFilledIcon className="text-primary-400 dark:text-primary-300 pointer-events-none size-6" />
+                      )}
+                    </Button>
+                  }
                   {...field}
                 />
               </div>
@@ -175,7 +316,7 @@ export default function FinishRegistration() {
               color="primary"
               className="w-full py-3 text-base font-semibold dark:text-secondary mt-4 animate-slide-in-up delay-600 transition-all duration-50 ease-quick-in-out hover:scale-[1.02] active:scale-[0.98]"
               variant="solid"
-              isLoading={isSubmitting}
+              isLoading={isRegistrationPending}
             >
               {t("submit")}
             </Button>

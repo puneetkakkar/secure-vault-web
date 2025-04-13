@@ -1,4 +1,4 @@
-import { EncryptionType } from "@/enums/encryption-type";
+import { EncryptionType } from "@/enums/encryption-type.enum";
 import { Utils } from "@/utils";
 
 export class SymmetricCryptoKey {

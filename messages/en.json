@@ -11,8 +11,8 @@
     "description": "Critical: Your master password cannot be recovered. Choose wisely and keep it secret.",
     "masterPassword": "Master Password",
     "masterPasswordPlaceholder": "Enter a strong password",
-    "confirmPassword": "Confirm Master Password",
-    "confirmPasswordPlaceholder": "Re-enter your password",
+    "confirmMasterPassword": "Confirm Master Password",
+    "confirmMasterPasswordPlaceholder": "Re-enter your password",
     "masterPasswordHint": "Master Password Hint (Optional)",
     "masterPasswordHintPlaceholder": "Enter a hint to help you remember your password",
     "submit": "Save Master Password",
@@ -20,7 +20,21 @@
     "passwordMismatchError": "Passwords do not match",
     "hide": "Hide",
     "show": "Show",
-    "passwordStrength": "Password Strength"
+    "passwordStrength": "Password Strength",
+    "emailRequired": "Email is required",
+    "registrationSuccess": "Your account has been created successfully",
+    "registrationError": "Failed to create account",
+    "validations": {
+      "masterPasswordMinLength": "Master password must be at least 8 characters",
+      "masterPasswordMaxLength": "Master password cannot exceed 32 characters",
+      "masterPasswordComplexity": "Master password must contain at least one lowercase, one uppercase, one number, and one special character",
+      "masterPasswordRequired": "Master password is required",
+      "confirmPasswordRequired": "Please confirm your password",
+      "passwordHintMinLength": "Password hint must be at least 5 characters",
+      "passwordHintRequired": "Master password hint is required",
+      "passwordMismatch": "Passwords do not match",
+      "passwordMismatchError": "Passwords do not match"
+    }
   },
   "Register": {
     "title": "Create Your Account",
@@ -36,7 +50,13 @@
     "registrationSuccess": "Registration Initiated",
     "registrationError": "Registration Failed",
     "loginPrompt": "Already have an account?",
-    "loginLink": "Log In"
+    "loginLink": "Log In",
+    "validations": {
+      "invalidEmail": "Please enter a valid email address",
+      "nameMinLength": "Name must be at least 2 characters",
+      "nameMaxLength": "Name cannot exceed 50 characters",
+      "termsAgreement": "You must agree to the terms and conditions"
+    }
   },
   "Login": {
     "title": "Welcome Back",
@@ -50,7 +70,13 @@
     "loginSuccess": "Login Successful",
     "loginError": "Login Failed",
     "registerPrompt": "Don't have an account?",
-    "registerLink": "Register"
+    "registerLink": "Register",
+    "rememberMe": "Keep me logged in",
+    "validations": {
+      "invalidEmail": "Please enter a valid email address",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "passwordRequired": "Master password is required"
+    }
   },
   "Home": {
     "secureVaultBadge": "Secure Your Digital Life",

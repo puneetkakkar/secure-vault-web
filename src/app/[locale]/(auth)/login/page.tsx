@@ -1,31 +1,72 @@
 "use client";
 
+import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
 import TextInput from "@/components/text-input";
-import { Link } from "@/i18n/navigation";
-import { Button, Checkbox } from "@heroui/react";
+import { SessionStorageKey } from "@/enums/storage.enum";
+import { useClientServiceFactory } from "@/hooks/use-client-service";
+import { Link, useRouter } from "@/i18n/navigation";
+import { serviceFactory } from "@/services/service-factory";
+import { addToast, Button, Checkbox } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { useState, useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import UserOnboardImage from "../../../../../assets/user-onboard.svg";
 import { LoginFormData, LoginFormSchema } from "../_schemas/login-form.schema";
 
 export default function Login() {
   const t = useTranslations("Login");
+  const router = useRouter();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isLoginPending, startLoginTransition] = useTransition();
+  const clientServiceFactory = useClientServiceFactory();
+  const authService = serviceFactory.getAuthService();
+  const storageService = clientServiceFactory.getSessionStorageService();
 
   const {
     control,
-    formState: { errors },
     handleSubmit,
+    reset,
+    formState: { errors },
   } = useForm<LoginFormData>({
     mode: "onSubmit",
     reValidateMode: "onSubmit",
-    resolver: zodResolver(LoginFormSchema),
+    defaultValues: {
+      email: "",
+      masterPassword: "",
+      rememberMe: false,
+    },
+    resolver: zodResolver(LoginFormSchema(t)),
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log(data);
-    // TODO: Implement login logic
+    startLoginTransition(async () => {
+      try {
+        const response = await authService.login({
+          email: data.email,
+          masterPassword: data.masterPassword,
+          rememberMe: data.rememberMe,
+        });
+
+        const responseData = response.data;
+
+        if (storageService && responseData) {
+          storageService.set(
+            SessionStorageKey.ACCESS_TOKEN,
+            responseData.token
+          );
+
+          router.replace("/vault");
+        }
+      } catch (error: any) {
+        addToast({
+          variant: "flat",
+          color: "danger",
+          title: error.message,
+        });
+      }
+    });
   };
 
   return (
@@ -49,6 +90,7 @@ export default function Login() {
                 <TextInput
                   label={t("email")}
                   type="text"
+                  variant="flat"
                   labelPlacement="inside"
                   errorMessage={errors.email?.message}
                   aria-invalid={errors.email ? "true" : "false"}
@@ -57,7 +99,6 @@ export default function Login() {
                     inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
                   }}
                   {...field}
-                  variant="flat"
                 />
               </div>
             )}
@@ -70,7 +111,7 @@ export default function Login() {
               <div className="animate-slide-in-up delay-100">
                 <TextInput
                   label={t("masterPassword")}
-                  type="password"
+                  type={isPasswordVisible ? "text" : "password"}
                   labelPlacement="inside"
                   errorMessage={errors.masterPassword?.message}
                   aria-invalid={errors.masterPassword ? "true" : "false"}
@@ -78,18 +119,43 @@ export default function Login() {
                     base: "mr-4",
                     inputWrapper: "bg-primary-500/20 dark:bg-primary-100/20",
                   }}
+                  endContent={
+                    <Button
+                      isIconOnly
+                      className="bg-transparent dark:bg-transparent focus:outline-none"
+                      onPress={() => setIsPasswordVisible(!isPasswordVisible)}
+                    >
+                      {isPasswordVisible ? (
+                        <EyeSlashFilledIcon className="text-2xl text-primary-400 dark:text-primary-300 pointer-events-none size-6" />
+                      ) : (
+                        <EyeFilledIcon className="text-2xl text-primary-400 dark:text-primary-300 pointer-events-none size-6" />
+                      )}
+                    </Button>
+                  }
                   {...field}
                 />
               </div>
             )}
           />
 
-          <Checkbox
-            color="primary"
-            classNames={{ icon: "dark:text-secondary" }}
-          >
-            <span className="text-sm sm:text-[1rem]">Keep me logged in</span>
-          </Checkbox>
+          <Controller
+            name="rememberMe"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <div className="animate-slide-in-up delay-500 pt-2">
+                <Checkbox
+                  color="primary"
+                  classNames={{ icon: "dark:text-secondary" }}
+                  onChange={onChange}
+                  isSelected={value}
+                >
+                  <span className="text-sm sm:text-[1rem]">
+                    {t("rememberMe")}
+                  </span>
+                </Checkbox>
+              </div>
+            )}
+          />
 
           <div className="flex flex-col items-start justify-center my-4">
             <Button
@@ -97,6 +163,7 @@ export default function Login() {
               color="primary"
               className="w-full py-3 text-base font-semibold dark:text-secondary animate-slide-in-up delay-600 transition-all duration-50 ease-quick-in-out hover:scale-[1.02] active:scale-[0.98]"
               variant="solid"
+              isLoading={isLoginPending}
             >
               {t("submit")}
             </Button>

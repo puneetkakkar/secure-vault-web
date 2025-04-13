@@ -1,22 +1,21 @@
-"use client";
-
 import { EncryptService as EncryptServiceAbstraction } from "@/abstractions/encrypt";
 import { EncString } from "@/models/enc-string";
 import { EncryptedObject } from "@/models/encrypted-object";
 import { SymmetricCryptoKey } from "@/models/symmetric-crypto-key";
 import { Utils } from "@/utils";
 import { CryptoFunctionService } from "./crypto-function.service";
+import { serviceFactory } from "./service-factory";
 
 export class EncryptService implements EncryptServiceAbstraction {
   private cryptoFunctionService: CryptoFunctionService;
 
   constructor() {
-    this.cryptoFunctionService = new CryptoFunctionService(window);
+    this.cryptoFunctionService = serviceFactory.getCryptoFunctionService();
   }
 
   private async aesEncrypt(
     data: Uint8Array,
-    key: SymmetricCryptoKey,
+    key: SymmetricCryptoKey
   ): Promise<EncryptedObject> {
     const obj = new EncryptedObject();
     obj.key = key;
@@ -29,7 +28,7 @@ export class EncryptService implements EncryptServiceAbstraction {
     obj.data = await this.cryptoFunctionService.aesEncrypt(
       data,
       obj.iv,
-      obj.key.encKey,
+      obj.key.encKey
     );
 
     if (obj.key.macKey != null) {
@@ -39,7 +38,7 @@ export class EncryptService implements EncryptServiceAbstraction {
       obj.mac = await this.cryptoFunctionService.hmac(
         macData,
         obj.key.macKey,
-        "sha256",
+        "sha256"
       );
     }
 
@@ -48,7 +47,7 @@ export class EncryptService implements EncryptServiceAbstraction {
 
   async encrypt(
     plainValue: string | Uint8Array,
-    key: SymmetricCryptoKey,
+    key: SymmetricCryptoKey
   ): Promise<EncString> {
     if (key == null) {
       throw new Error("No encryption key provided.");

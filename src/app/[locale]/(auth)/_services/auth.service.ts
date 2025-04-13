@@ -1,9 +1,24 @@
 "use client";
 
+import { CryptoService } from "@/abstractions/crypto";
+import { PBKDF2Config } from "@/config/pbkdf";
+import { PBKDF2_ITERATIONS } from "@/enums/pbkdf2.enum";
+import { serviceFactory } from "@/services/service-factory";
 import { ApiError } from "@/types/api";
-import { sendVerificationEmailApiAction } from "../_lib/actions/auth.action";
+import {
+  finishRegistrationApiAction,
+  loginApiAction,
+  sendVerificationEmailApiAction,
+  verifyEmailApiAction,
+} from "../_lib/actions/auth.action";
 
 export class AuthService {
+  private cryptoService: CryptoService;
+
+  constructor() {
+    this.cryptoService = serviceFactory.getCryptoService();
+  }
+
   async initiateRegistration(payload: { email: string; name: string }) {
     const result = await sendVerificationEmailApiAction(payload);
 
@@ -20,65 +35,106 @@ export class AuthService {
     return result;
   }
 
-  // async signupUser(
-  // email: string,
-  // masterPassword: string,
-  // name: string,
-  // hint: string,
-  // ) {
-  // const pbkdf2Config = new PBKDF2Config(PBKDF2_ITERATIONS);
-  // const masterKey = await this.cryptoService.makeMasterKey(
-  //   masterPassword,
-  //   email,
-  //   pbkdf2Config,
-  // );
-  // const [newUserKey, newEncUserKey] =
-  //   await this.cryptoService.makeUserKey(masterKey);
+  async verifyEmail(payload: { token: string; email: string }) {
+    const result = await verifyEmailApiAction(payload);
 
-  // if (!newUserKey || !newEncUserKey) {
-  //   throw new Error("User key could not be created");
-  // }
+    if (!result.success) {
+      throw new ApiError(
+        result.message,
+        result.status,
+        new Date().toISOString(),
+        result.code,
+        result.errors
+      );
+    }
 
-  // const masterKeyHash = await this.cryptoService.hashMasterKey(
-  //   masterPassword,
-  //   masterKey,
-  // );
+    return result;
+  }
 
-  // const { encryptedString } = newEncUserKey;
-  // const signupRequest = this.buildSignupRequest(
-  //   email,
-  //   name,
-  //   masterKeyHash,
-  //   hint,
-  //   encryptedString,
-  //   pbkdf2Config.iterations,
-  // );
+  async finishRegistration(payload: {
+    email: string;
+    masterPassword: string;
+    masterPasswordHint: string;
+    hint: string;
+  }) {
+    const pbkdf2Config = new PBKDF2Config(PBKDF2_ITERATIONS);
+    const masterKey = await this.cryptoService.makeMasterKey(
+      payload.masterPassword,
+      payload.email,
+      pbkdf2Config
+    );
+    const [newUserKey, newEncUserKey] =
+      await this.cryptoService.makeUserKey(masterKey);
 
-  // const signUpRequest = new SignUpRequest(email, name);
+    if (!newUserKey || !newEncUserKey) {
+      throw new Error("User key could not be created");
+    }
 
-  // const actionWithExtraParameters = signupUserAction.bind(
-  //   null,
-  //   signUpRequest.toJSON(),
-  // );
+    const masterKeyHash = await this.cryptoService.hashMasterKey(
+      payload.masterPassword,
+      masterKey
+    );
 
-  // return await actionWithExtraParameters();
-  // }
+    const { encryptedString } = newEncUserKey;
 
-  // private buildSignupRequest(
-  //   email: string,
-  //   name: string,
-  //   masterKeyHash: string | null,
-  //   hint: string,
-  //   encryptedUserKey: EncryptedString | undefined,
-  //   pbkdf2Iterations: number,
-  // ) {
-  //   return new SignUpRequest(
-  //     email,
-  //     name,
-  //     masterKeyHash,
-  //     hint,
-  //     encryptedUserKey,
-  //     pbkdf2Iterations,
-  //   );
-  // }
+    const signupRequestPayload = {
+      email: payload.email,
+      masterPasswordHash: masterKeyHash,
+      userKey: encryptedString,
+      pbkdf2Iterations: pbkdf2Config.iterations,
+      masterPasswordHint: payload.hint,
+    };
+
+    const result = await finishRegistrationApiAction(signupRequestPayload);
+
+    if (!result.success) {
+      throw new ApiError(
+        result.message,
+        result.status,
+        new Date().toISOString(),
+        result.code,
+        result.errors
+      );
+    }
+
+    return result;
+  }
+
+  async login(payload: {
+    email: string;
+    masterPassword: string;
+    rememberMe: boolean;
+  }) {
+    const pbkdf2Config = new PBKDF2Config(PBKDF2_ITERATIONS);
+    const masterKey = await this.cryptoService.makeMasterKey(
+      payload.masterPassword,
+      payload.email,
+      pbkdf2Config
+    );
+
+    const masterKeyHash = await this.cryptoService.hashMasterKey(
+      payload.masterPassword,
+      masterKey
+    );
+
+    const loginRequestPayload = {
+      email: payload.email,
+      masterPasswordHash: masterKeyHash,
+      rememberMe: payload.rememberMe,
+    };
+
+    const result = await loginApiAction(loginRequestPayload);
+
+    if (!result.success) {
+      throw new ApiError(
+        result.message,
+        result.status,
+        new Date().toISOString(),
+        result.code,
+        result.errors
+      );
+    }
+
+    return result;
+  }
 }

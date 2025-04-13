@@ -1,37 +1,17 @@
 import { z } from "zod";
 
-// Create a Zod schema
-export const InitialRegistrationFormSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  fullName: z.string().min(2, "Name must be at least 2 characters"),
-  // masterPassword: z
-  //   .string()
-  //   .min(8, "Master password must be at least 8 characters")
-  //   .max(32, "Master password cannot exceed 32 characters")
-  //   .regex(
-  //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/,
-  //     "Master password must contain at least one lowercase, one uppercase, one number, and one special character",
-  //   )
-  //   .nonempty("Master password is required"),
-  // confirmMasterPassword: z.string().nonempty("Please confirm your password"),
-  // masterPasswordHint: z
-  //   .string()
-  //   .min(5, "Password hint must be at least 5 characters")
-  //   .nonempty("Master password hint is required"),
-  isAgreed: z
-    .boolean()
-    .refine((val) => val, "You must agree to the terms and conditions")
-    .refine((val) => val, "Agreement is required."),
-});
-// .superRefine((val, ctx) => {
-//   if (val.masterPassword !== val.confirmMasterPassword) {
-//     ctx.addIssue({
-//       code: z.ZodIssueCode.custom,
-//       message: "Password is not the same as confirm password",
-//     });
-//   }
-// });
+export const InitialRegistrationFormSchema = (t: (key: string) => string) =>
+  z.object({
+    email: z.string().email(t("validations.invalidEmail")),
+    fullName: z
+      .string()
+      .min(2, t("validations.nameMinLength"))
+      .max(50, t("validations.nameMaxLength")),
+    isAgreed: z
+      .boolean()
+      .refine((val) => val, { message: t("validations.termsAgreement") }),
+  });
 
 export type InitialRegistrationFormData = z.infer<
-  typeof InitialRegistrationFormSchema
+  ReturnType<typeof InitialRegistrationFormSchema>
 >;
