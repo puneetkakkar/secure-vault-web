@@ -87,41 +87,59 @@ export class ApiService {
 
   public async get<T>(
     endpoint: string,
-    params?: Record<string, string>
+    params?: Record<string, string>,
+    config?: Partial<RequestInit>
   ): Promise<ApiResponse<T>> {
     const url = params
       ? `${endpoint}?${new URLSearchParams(params)}`
       : endpoint;
     return this.request<T>(url, {
       method: "GET",
+      ...config,
     });
   }
 
-  public async post<T, R>(endpoint: string, data: T): Promise<ApiResponse<R>> {
+  public async post<T, R>(
+    endpoint: string,
+    data: T,
+    config?: Partial<RequestInit>
+  ): Promise<ApiResponse<R>> {
     return this.request<R>(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        ...config?.headers,
       },
       body: JSON.stringify(data),
+      ...config,
     });
   }
 
-  public async put<T, R>(endpoint: string, data: T): Promise<ApiResponse<R>> {
+  public async put<T, R>(
+    endpoint: string,
+    data: T,
+    config?: Partial<RequestInit>
+  ): Promise<ApiResponse<R>> {
     return this.request<R>(endpoint, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        ...config?.headers,
       },
       body: JSON.stringify(data),
+      ...config,
     });
   }
 
-  public async delete<T>(endpoint: string): Promise<ApiResponse<T>> {
+  public async delete<T>(
+    endpoint: string,
+    config?: Partial<RequestInit>
+  ): Promise<ApiResponse<T>> {
     return this.request<T>(endpoint, {
       method: "DELETE",
+      ...config,
     });
   }
 }

@@ -7,11 +7,12 @@ export const API_ENDPOINTS = {
     LOGOUT: "/v1/auth/logout",
     REFRESH_TOKEN: "/v1/auth/refresh-token",
   },
-  // USER: {
-  //   PROFILE: "/v1/user/profile",
-  //   UPDATE_PROFILE: "/v1/user/profile",
-  //   CHANGE_PASSWORD: "/v1/user/change-password",
-  // },
+  USER: {
+    INFO: "/v1/user/me",
+    PROFILE: "/v1/user/profile",
+    UPDATE_PROFILE: "/v1/user/profile",
+    CHANGE_PASSWORD: "/v1/user/change-password",
+  },
   // VAULT: {
   //   LIST: "/v1/vault",
   //   CREATE: "/v1/vault",

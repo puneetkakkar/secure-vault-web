@@ -1,6 +1,9 @@
+"use server";
+
+import { ActionResult } from "@/types/action";
 import { ApiError, ApiErrorResponse } from "@/types/api";
 import { UnhandledError } from "@/types/unhandled-error";
-import { isDevelopment } from "./env";
+import { isDevelopment } from "../env";
 
 // ANSI color codes
 const colors = {
@@ -12,22 +15,6 @@ const colors = {
   red: "\x1b[31m",
   yellow: "\x1b[33m",
 };
-
-// Define the standard return type for actions
-export type ActionResult<TData = void> =
-  | {
-      success: true;
-      status: number;
-      data: TData;
-      message?: string;
-    }
-  | {
-      success: false;
-      status: number;
-      message: string;
-      code: string;
-      errors: Record<string, unknown>;
-    };
 
 // Helper type guard for ApiError-like objects
 function isApiError(error: any): error is ApiError | ApiErrorResponse {
@@ -49,7 +36,7 @@ function isApiError(error: any): error is ApiError | ApiErrorResponse {
 }
 
 /** Internal execution logic */
-async function executeHandledAction<TArgs extends any[], TData>(
+export async function executeHandledAction<TArgs extends any[], TData>(
   actionFn: (...args: TArgs) => Promise<Partial<ActionResult<TData>>>,
   args: TArgs
 ): Promise<ActionResult<TData>> {
@@ -127,13 +114,4 @@ async function executeHandledAction<TArgs extends any[], TData>(
       };
     }
   }
-}
-
-/** Action creator */
-export function createApiAction<TArgs extends any[], TData>(
-  actionLogic: (...args: TArgs) => Promise<Partial<ActionResult<TData>>>
-): (...args: TArgs) => Promise<ActionResult<TData>> {
-  return async (...args: TArgs): Promise<ActionResult<TData>> => {
-    return executeHandledAction(actionLogic, args);
-  };
 }
