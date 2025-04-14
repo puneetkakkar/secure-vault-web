@@ -10,7 +10,7 @@ import {
   loginApiAction,
   sendVerificationEmailApiAction,
   verifyEmailApiAction,
-} from "../_lib/actions/auth.action";
+} from "../_actions/server/auth.action";
 
 export class AuthService {
   private cryptoService: CryptoService;
@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   async initiateRegistration(payload: { email: string; name: string }) {
-    const result = await sendVerificationEmailApiAction(payload);
+    const result = await sendVerificationEmailApiAction(payload, {});
 
     if (!result.success) {
       throw new ApiError(
@@ -123,7 +123,7 @@ export class AuthService {
       rememberMe: payload.rememberMe,
     };
 
-    const result = await loginApiAction(loginRequestPayload);
+    const result = await loginApiAction(loginRequestPayload, {});
 
     if (!result.success) {
       throw new ApiError(

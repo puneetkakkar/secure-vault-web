@@ -11,41 +11,69 @@ export class AuthApiService {
     this.apiService = apiService;
   }
 
-  async sendVerificationEmail(payload: {
-    email: string;
-    name: string;
-  }): Promise<ServerActionResponse> {
+  async sendVerificationEmail(
+    payload: {
+      email: string;
+      name: string;
+    },
+    config?: Partial<RequestInit>
+  ): Promise<ServerActionResponse> {
     return this.apiService.post(
       API_ENDPOINTS.AUTH.SEND_VERIFICATION_EMAIL,
-      payload
+      payload,
+      config
     );
   }
 
-  async verifyEmail(payload: {
-    token: string;
-    email: string;
-  }): Promise<ServerActionResponse> {
-    return this.apiService.get(API_ENDPOINTS.AUTH.VERIFY_EMAIL, payload);
+  async verifyEmail(
+    payload: {
+      token: string;
+      email: string;
+    },
+    config?: Partial<RequestInit>
+  ): Promise<ServerActionResponse> {
+    return this.apiService.get(
+      API_ENDPOINTS.AUTH.VERIFY_EMAIL,
+      payload,
+      config
+    );
   }
 
-  async finishRegistration(payload: {
-    email: string;
-    masterPasswordHash: string | null;
-    userKey: EncryptedString | undefined;
-    pbkdf2Iterations: number;
-    masterPasswordHint: string;
-  }): Promise<ServerActionResponse> {
+  async finishRegistration(
+    payload: {
+      email: string;
+      masterPasswordHash: string | null;
+      userKey: EncryptedString | undefined;
+      pbkdf2Iterations: number;
+      masterPasswordHint: string;
+    },
+    config?: Partial<RequestInit>
+  ): Promise<ServerActionResponse> {
     return this.apiService.post(
       API_ENDPOINTS.AUTH.FINISH_REGISTRATION,
-      payload
+      payload,
+      config
     );
   }
 
-  async login(payload: {
-    email: string;
-    masterPasswordHash: string;
-    rememberMe: boolean;
-  }): Promise<ServerActionResponse<LoginResponse>> {
-    return this.apiService.post(API_ENDPOINTS.AUTH.LOGIN, payload);
+  async login(
+    payload: {
+      email: string;
+      masterPasswordHash: string;
+      rememberMe: boolean;
+    },
+    config?: Partial<RequestInit>
+  ): Promise<ServerActionResponse<LoginResponse>> {
+    return this.apiService.post(API_ENDPOINTS.AUTH.LOGIN, payload, config);
+  }
+
+  async refreshToken(
+    config?: Partial<RequestInit>
+  ): Promise<ServerActionResponse<LoginResponse>> {
+    return this.apiService.get(
+      API_ENDPOINTS.AUTH.REFRESH_TOKEN,
+      undefined,
+      config
+    );
   }
 }

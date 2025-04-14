@@ -1,5 +1,7 @@
 import { AuthApiService } from "@/app/[locale]/(auth)/_services/auth-api.service";
 import { AuthService } from "@/app/[locale]/(auth)/_services/auth.service";
+import { VaultApiService } from "@/app/[locale]/(vault)/_services/vault-api.service";
+import { VaultService } from "@/app/[locale]/(vault)/_services/vault.service";
 import { env } from "@/lib/env/env";
 import { ApiConfig } from "@/types/api";
 import { ApiService } from "./api.service";
@@ -17,6 +19,8 @@ class ServiceFactory {
   private encryptService: EncryptService | null = null;
   private keyGenerationService: KeyGenerationService | null = null;
   private cryptoFunctionService: CryptoFunctionService | null = null;
+  private vaultApiService: VaultApiService | null = null;
+  private vaultService: VaultService | null = null;
 
   private constructor() {}
 
@@ -39,6 +43,20 @@ class ServiceFactory {
       this.authApiService = new AuthApiService(this.getApiService());
     }
     return this.authApiService;
+  }
+
+  getVaultService(): VaultService {
+    if (!this.vaultService) {
+      this.vaultService = new VaultService();
+    }
+    return this.vaultService;
+  }
+
+  getVaultApiService(): VaultApiService {
+    if (!this.vaultApiService) {
+      this.vaultApiService = new VaultApiService(this.getApiService());
+    }
+    return this.vaultApiService;
   }
 
   getCryptoService(): CryptoService {
