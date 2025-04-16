@@ -1,26 +1,26 @@
 "use client";
 
+import { useRouter } from "@/core/i18n";
 import {
-  FinishRegistrationFormData,
-  FinishRegistrationFormSchema,
-} from "@/app/[locale]/(auth)/_schemas/finish-registration-form.schema";
-import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
-import TextInput from "@/components/text-input";
-import { SessionStorageKey } from "@/enums/storage.enum";
-import { useClientServiceFactory } from "@/hooks/use-client-service";
-import { useRouter } from "@/i18n/navigation";
-import { serviceFactory } from "@/services/service-factory";
+	FinishRegistrationFormData,
+	FinishRegistrationFormSchema,
+} from "@/modules/auth/schemas";
+import { serviceFactory } from "@/shared/services/service-factory";
+import { TextInput } from "@/shared/components";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "@/shared/components/icons";
+import { SessionStorageKey } from "@/shared/enums";
+import { useClientServiceFactory } from "@/shared/hooks/use-client-service";
 import { addToast, Button, Spinner } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  useTransition,
+	useCallback,
+	useEffect,
+	useMemo,
+	useState,
+	useTransition,
 } from "react";
 import { Controller, useForm } from "react-hook-form";
 import UserOnboardImage from "../../../../../assets/user-onboard.svg";

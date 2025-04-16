@@ -1,7 +1,7 @@
-import { routing } from "@/i18n/routing";
+import { isProduction } from "@/core/env";
 import createMiddleware from "next-intl/middleware";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
-import { isDevelopment, isProduction } from "./utils/env";
+import { routing } from "@/core/i18n";
 
 const intlMiddleware = createMiddleware(routing);
 

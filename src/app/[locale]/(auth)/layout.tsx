@@ -1,5 +1,4 @@
-import Footer from "@/components/footer";
-import { Navbar } from "@/components/navbar";
+import { Footer, Navbar } from "@/shared/components";
 import { setRequestLocale } from "next-intl/server";
 import React, { Suspense } from "react";
 import Loading from "./loading";

@@ -1,11 +1,12 @@
 "use client";
 
-import { EyeFilledIcon, EyeSlashFilledIcon } from "@/components/icons";
-import TextInput from "@/components/text-input";
-import { SessionStorageKey } from "@/enums/storage.enum";
-import { useClientServiceFactory } from "@/hooks/use-client-service";
-import { Link, useRouter } from "@/i18n/navigation";
-import { serviceFactory } from "@/services/service-factory";
+import { Link, useRouter } from "@/core/i18n";
+import { LoginFormData, LoginFormSchema } from "@/modules/auth/schemas";
+import { serviceFactory } from "@/shared/services/service-factory";
+import { TextInput } from "@/shared/components";
+import { EyeFilledIcon, EyeSlashFilledIcon } from "@/shared/components/icons";
+import { SessionStorageKey } from "@/shared/enums";
+import { useClientServiceFactory } from "@/shared/hooks/use-client-service";
 import { addToast, Button, Checkbox } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
@@ -13,7 +14,6 @@ import Image from "next/image";
 import { useState, useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import UserOnboardImage from "../../../../../assets/user-onboard.svg";
-import { LoginFormData, LoginFormSchema } from "../_schemas/login-form.schema";
 
 export default function Login() {
   const t = useTranslations("Login");

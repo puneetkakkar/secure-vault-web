@@ -1,6 +1,6 @@
 import { ClientProviders } from "@/app/[locale]/client-providers";
-import { siteConfig } from "@/config/site";
-import { routing } from "@/i18n/routing";
+import { siteConfig } from "@/core/config";
+import { routing } from "@/core/i18n";
 import "@/styles/globals.css";
 import clsx from "clsx";
 import type { Metadata } from "next";

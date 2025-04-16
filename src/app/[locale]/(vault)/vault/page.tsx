@@ -1,6 +1,6 @@
 "use client";
 
-import { serviceFactory } from "@/services/service-factory";
+import { serviceFactory } from "@/shared/services/service-factory";
 import { useCallback, useEffect } from "react";
 
 export default function Vault() {

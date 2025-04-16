@@ -3,7 +3,7 @@ import { link as linkStyles } from "@heroui/theme";
 import { clsx } from "clsx";
 import Image from "next/image";
 import React from "react";
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/shared/components";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@heroui/link";
 
