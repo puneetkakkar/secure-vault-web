@@ -3,11 +3,12 @@
 import { useRouter } from "@/i18n/navigation";
 import { serviceFactory } from "@/services/service-factory";
 import { Button } from "@heroui/button";
-import { addToast, Spinner } from "@heroui/react";
+import { addToast } from "@heroui/react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import EmailVerificationImage from "../../../../../assets/email-verification.svg";
+import Loading from "../loading";
 
 const EmailVerification = () => {
   const router = useRouter();
@@ -26,7 +27,7 @@ const EmailVerification = () => {
     }
 
     setPageLoading(false);
-  }, []);
+  }, [email, name, router]);
 
   const handleResendVerificationLink = () => {
     startTransition(async () => {
@@ -53,15 +54,7 @@ const EmailVerification = () => {
   };
 
   if (isPageLoading) {
-    return (
-      <div className="flex items-center justify-center mt-16 mx-6 py-4 px-1 sm:px-6 lg:px-8 h-[80vh]">
-        <Spinner
-          classNames={{ wrapper: "w-24 h-24" }}
-          variant="dots"
-          color="primary"
-        />
-      </div>
-    );
+    return <Loading />;
   }
 
   return (

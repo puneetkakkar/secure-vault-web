@@ -15,7 +15,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState, useTransition } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 import { Controller, useForm } from "react-hook-form";
 import UserOnboardImage from "../../../../../assets/user-onboard.svg";
 
@@ -69,24 +75,7 @@ export default function FinishRegistration() {
     resolver: zodResolver(FinishRegistrationFormSchema(t)),
   });
 
-  useEffect(() => {
-    if (!email || !token) {
-      // Handle the case where email or token is not provided
-      router.replace("/");
-    }
-
-    verifyEmail();
-  }, [token, email]);
-
-  const masterPassword = watch("masterPassword");
-
-  const passwordStrengthColor = useMemo(() => {
-    const strength = calculatePasswordStrength(masterPassword);
-    setPasswordStrength(strength);
-    return getPasswordStrengthColor(strength);
-  }, [masterPassword]);
-
-  const verifyEmail = async () => {
+  const verifyEmail = useCallback(async () => {
     try {
       const response = await authService.verifyEmail({
         token: token!,
@@ -107,7 +96,24 @@ export default function FinishRegistration() {
       });
       setPageLoading(false);
     }
-  };
+  }, [authService, token, email, setPageLoading]);
+
+  useEffect(() => {
+    if (!email || !token) {
+      // Handle the case where email or token is not provided
+      router.replace("/");
+    }
+
+    verifyEmail();
+  }, [token, email, router, verifyEmail]);
+
+  const masterPassword = watch("masterPassword");
+
+  const passwordStrengthColor = useMemo(() => {
+    const strength = calculatePasswordStrength(masterPassword);
+    setPasswordStrength(strength);
+    return getPasswordStrengthColor(strength);
+  }, [masterPassword]);
 
   const loginUser = async (data: FinishRegistrationFormData) => {
     try {
