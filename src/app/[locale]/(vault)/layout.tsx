@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/shared/components";
 import { setRequestLocale } from "next-intl/server";
 import React from "react";
 

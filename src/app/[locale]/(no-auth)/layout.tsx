@@ -1,6 +1,5 @@
-import { Navbar } from "@/components/navbar";
-import Footer from "@/components/footer";
-import React, { ReactNode } from "react";
+import { Footer, Navbar } from "@/shared/components";
+import { ReactNode } from "react";
 
 export default function NoAuthLayout({ children }: { children: ReactNode }) {
   return (

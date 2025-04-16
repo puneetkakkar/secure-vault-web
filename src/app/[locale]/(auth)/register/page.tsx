@@ -1,20 +1,19 @@
 "use client";
 
-import UserOnboardImage from "../../../../../assets/user-onboard.svg";
+import { Link, useRouter } from "@/core/i18n";
+import {
+  InitialRegistrationFormData,
+  InitialRegistrationFormSchema,
+} from "@/modules/auth/schemas";
+import { serviceFactory } from "@/shared/services/service-factory";
+import { TextInput } from "@/shared/components";
 import { Button, Checkbox, addToast } from "@heroui/react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "@/i18n/navigation";
-import TextInput from "@/components/text-input";
-import { serviceFactory } from "@/services/service-factory";
-import { useRouter } from "@/i18n/navigation";
-import {
-  InitialRegistrationFormSchema,
-  InitialRegistrationFormData,
-} from "@/app/[locale]/(auth)/_schemas/signup-form.schema";
 import { useTransition } from "react";
+import { Controller, useForm } from "react-hook-form";
+import UserOnboardImage from "../../../../../assets/user-onboard.svg";
 
 export default function Register() {
   const t = useTranslations("Register");

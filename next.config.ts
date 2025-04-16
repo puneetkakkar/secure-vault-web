@@ -1,6 +1,6 @@
 import { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
-import "./src/lib/env/env";
+import "./src/core/env";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -9,5 +9,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withNextIntl = createNextIntlPlugin();
+const withNextIntl = createNextIntlPlugin({
+  requestConfig: "./src/core/i18n/request.ts",
+});
 export default withNextIntl(nextConfig);

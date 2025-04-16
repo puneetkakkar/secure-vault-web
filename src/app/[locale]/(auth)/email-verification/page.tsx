@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter } from "@/i18n/navigation";
-import { serviceFactory } from "@/services/service-factory";
+import { useRouter } from "@/core/i18n";
+import { serviceFactory } from "@/shared/services/service-factory";
 import { Button } from "@heroui/button";
 import { addToast } from "@heroui/react";
 import Image from "next/image";
