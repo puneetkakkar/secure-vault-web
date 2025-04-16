@@ -1,7 +1,8 @@
-import { Navbar } from "@/components/navbar";
 import Footer from "@/components/footer";
-import React from "react";
+import { Navbar } from "@/components/navbar";
 import { setRequestLocale } from "next-intl/server";
+import React, { Suspense } from "react";
+import Loading from "./loading";
 
 export default async function AuthLayout({
   children,
@@ -16,7 +17,11 @@ export default async function AuthLayout({
   return (
     <div className="relative flex flex-col h-screen">
       <Navbar showAuthButtons={false} />
-      <main className="container mx-auto max-w-7xl flex-grow">{children}</main>
+      <Suspense fallback={<Loading />}>
+        <main className="container mx-auto max-w-7xl flex-grow">
+          {children}
+        </main>
+      </Suspense>
       <Footer />
     </div>
   );

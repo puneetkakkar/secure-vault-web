@@ -84,7 +84,7 @@ const TextInput = forwardRef(
       }
 
       return endContent;
-    }, [isClearable, getClearButtonProps]);
+    }, [isClearable, endContent, getClearButtonProps]);
 
     const innerWrapper = React.useMemo(() => {
       if (startContent || end) {

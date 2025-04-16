@@ -8,14 +8,19 @@ import React from "react";
 
 export interface ProvidersProps {
   children: React.ReactNode;
+  nonce: string | undefined;
 }
 
-export function ClientProviders({ children }: ProvidersProps) {
+export function ClientProviders({ children, nonce }: ProvidersProps) {
   const router = useRouter();
 
   return (
     <HeroUIProvider navigate={router.push}>
-      <NextThemesProvider attribute={"class"} defaultTheme={"dark"}>
+      <NextThemesProvider
+        attribute={"class"}
+        defaultTheme={"dark"}
+        nonce={nonce ?? undefined}
+      >
         <ToastProvider />
         {children}
       </NextThemesProvider>
