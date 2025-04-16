@@ -2,25 +2,25 @@
 
 import { useRouter } from "@/core/i18n";
 import {
-	FinishRegistrationFormData,
-	FinishRegistrationFormSchema,
+  FinishRegistrationFormData,
+  FinishRegistrationFormSchema,
 } from "@/modules/auth/schemas";
-import { serviceFactory } from "@/shared/services/service-factory";
 import { TextInput } from "@/shared/components";
 import { EyeFilledIcon, EyeSlashFilledIcon } from "@/shared/components/icons";
 import { SessionStorageKey } from "@/shared/enums";
 import { useClientServiceFactory } from "@/shared/hooks/use-client-service";
+import { serviceFactory } from "@/shared/services/service-factory";
 import { addToast, Button, Spinner } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import {
-	useCallback,
-	useEffect,
-	useMemo,
-	useState,
-	useTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
 } from "react";
 import { Controller, useForm } from "react-hook-form";
 import UserOnboardImage from "../../../../../assets/user-onboard.svg";
@@ -75,6 +75,8 @@ export default function FinishRegistration() {
     resolver: zodResolver(FinishRegistrationFormSchema(t)),
   });
 
+  const masterPassword = watch("masterPassword");
+
   const verifyEmail = useCallback(async () => {
     try {
       const response = await authService.verifyEmail({
@@ -107,13 +109,14 @@ export default function FinishRegistration() {
     verifyEmail();
   }, [token, email, router, verifyEmail]);
 
-  const masterPassword = watch("masterPassword");
-
-  const passwordStrengthColor = useMemo(() => {
+  useEffect(() => {
     const strength = calculatePasswordStrength(masterPassword);
     setPasswordStrength(strength);
-    return getPasswordStrengthColor(strength);
   }, [masterPassword]);
+
+  const passwordStrengthColor = useMemo(() => {
+    return getPasswordStrengthColor(passwordStrength);
+  }, [passwordStrength]);
 
   const loginUser = async (data: FinishRegistrationFormData) => {
     try {
