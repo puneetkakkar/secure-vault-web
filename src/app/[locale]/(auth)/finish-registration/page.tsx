@@ -130,7 +130,7 @@ export default function FinishRegistration() {
 
       if (storageService && responseData) {
         storageService.set(SessionStorageKey.ACCESS_TOKEN, responseData.token);
-        router.replace("/vault");
+        router.replace("/home");
       }
 
       setPageLoading(false);

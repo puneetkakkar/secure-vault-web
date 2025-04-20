@@ -3,7 +3,7 @@
 import { serviceFactory } from "@/shared/services/service-factory";
 import { useCallback, useEffect } from "react";
 
-export default function Vault() {
+export default function Vaults() {
   const vaultService = serviceFactory.getVaultService();
 
   const fetchUserInfo = useCallback(async () => {
@@ -19,5 +19,5 @@ export default function Vault() {
     fetchUserInfo();
   }, [fetchUserInfo]);
 
-  return <div>Vault</div>;
+  return <div>Vaults</div>;
 }

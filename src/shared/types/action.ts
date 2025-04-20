@@ -1,4 +1,4 @@
-import { ApiError, ApiErrorResponse, ApiSuccessResponse } from "./api";
+import { ApiResponse } from "./api";
 
 // Define the standard return type for actions
 export type ActionResult<TData = void> =
@@ -28,9 +28,9 @@ export type RequestConfig = {
   timeout?: number;
 };
 
-type ServerActionError = ApiError | ApiErrorResponse;
-type ServerActionSuccess<T> = ApiSuccessResponse<T>;
+// type ServerActionError = ApiError ;
+// type ServerActionSuccess<T> = ApiSuccessResponse<T>;
 
-type ServerActionResponse<T = {}> = ServerActionSuccess<T> | ServerActionError;
+type ServerActionResponse<T = {}> = ApiResponse<T>;
 
 export type { ServerActionResponse };

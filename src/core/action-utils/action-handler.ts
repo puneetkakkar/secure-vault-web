@@ -1,8 +1,15 @@
 "use server";
 
 import { isDevelopment } from "@/core/env/env.utils";
-import { ActionResult, ApiError, ApiErrorResponse, UnhandledError } from "@/shared/types";
-
+import {
+  ActionResult,
+  ApiError,
+  ApiErrorResponse,
+  ServerActionResponse,
+  UnhandledError,
+} from "@/shared/types";
+import { cookies } from "next/headers";
+import setCookieParser from "set-cookie-parser";
 // ANSI color codes
 const colors = {
   reset: "\x1b[0m",
@@ -35,7 +42,7 @@ function isApiError(error: any): error is ApiError | ApiErrorResponse {
 
 /** Internal execution logic */
 export async function executeHandledAction<TArgs extends any[], TData>(
-  actionFn: (...args: TArgs) => Promise<Partial<ActionResult<TData>>>,
+  actionFn: (...args: TArgs) => Promise<ServerActionResponse<TData>>,
   args: TArgs
 ): Promise<ActionResult<TData>> {
   try {
@@ -46,19 +53,79 @@ export async function executeHandledAction<TArgs extends any[], TData>(
       );
     }
 
-    const successResult = await actionFn(...args);
+    const cookieStore = await cookies();
+
+    const newArgs = [...args] as TArgs;
+    newArgs[1] = {
+      ...args[1],
+      headers: {
+        ...args[1].headers,
+        Cookie: cookieStore.toString(),
+      },
+    } as TArgs[1];
+
+    const serverActionResponse = await actionFn(...newArgs);
+
+    const rawSetCookies = serverActionResponse.headers?.getSetCookie?.();
+
+    if (rawSetCookies) {
+      const parsedCookies = setCookieParser.parse(rawSetCookies, {
+        map: false,
+      });
+
+      parsedCookies.forEach((cookie) => {
+        const cookiePayload: Parameters<typeof cookieStore.set>[0] = {
+          name: cookie.name,
+          value: cookie.value,
+        };
+
+        if (cookie.path) cookiePayload.path = cookie.path;
+        if (cookie.expires) cookiePayload.expires = cookie.expires;
+        if (cookie.httpOnly !== undefined)
+          cookiePayload.httpOnly = cookie.httpOnly;
+        if (cookie.sameSite)
+          cookiePayload.sameSite = cookie.sameSite as "lax" | "strict" | "none";
+        if (cookie.secure !== undefined) cookiePayload.secure = cookie.secure;
+        if (cookie.maxAge !== undefined) cookiePayload.maxAge = cookie.maxAge;
+        if (cookie.domain) cookiePayload.domain = cookie.domain;
+
+        cookieStore.set(cookiePayload);
+      });
+    }
+
+    let serverActionResponseData: any;
+    try {
+      serverActionResponseData = await serverActionResponse.json();
+    } catch (jsonError) {
+      throw new Error(`Failed to parse JSON response`);
+    }
+
+    if (!serverActionResponse.ok) {
+      throw new ApiError(
+        serverActionResponseData.message,
+        serverActionResponse.status,
+        new Date().toISOString(),
+        serverActionResponseData.code,
+        serverActionResponseData?.errors ?? null
+      );
+    }
 
     if (isDevelopment) {
       console.log(
         `${colors.green}${colors.bright}[API Response]${colors.reset} ${colors.dim}${actionFn.name}${colors.reset}`,
-        successResult
+        {
+          data: (serverActionResponseData.data ?? null) as TData,
+          status: serverActionResponse.status,
+          message: serverActionResponseData.message,
+        }
       );
     }
 
     return {
       success: true,
       status: 200,
-      ...successResult,
+      data: (serverActionResponseData.data ?? null) as TData,
+      message: serverActionResponseData.message,
     } as ActionResult<TData>;
   } catch (error) {
     if (isApiError(error)) {
@@ -84,7 +151,7 @@ export async function executeHandledAction<TArgs extends any[], TData>(
         message: error.message || "An application error occurred.",
         code: error.code || "UNKNOWN_ERROR",
         errors: "errors" in error && error.errors ? error.errors : {},
-      };
+      } as ActionResult<TData>;
     } else {
       // Always log unexpected errors
       const unexpectedErrorLogContext: UnhandledError = {
@@ -109,7 +176,7 @@ export async function executeHandledAction<TArgs extends any[], TData>(
         message: "An unexpected error occurred.",
         code: "UNEXPECTED_RUNTIME_ERROR",
         errors: {},
-      };
+      } as ActionResult<TData>;
     }
   }
 }

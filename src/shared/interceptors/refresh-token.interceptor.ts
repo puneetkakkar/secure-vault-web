@@ -1,7 +1,7 @@
 "use client";
 
-import { SessionStorageKey } from "@/shared/enums";
 import { refreshTokenApiAction } from "@/modules/auth";
+import { SessionStorageKey } from "@/shared/enums";
 import ClientServiceFactory from "@/shared/services/client-service-factory";
 import { ActionResult } from "@/shared/types/action";
 import { ResponseInterceptorWithRetryContext } from "@/shared/types/interceptor";
@@ -36,7 +36,7 @@ export const refreshTokenInterceptor: ResponseInterceptorWithRetryContext<
         throw new Error("Session storage service not found");
       }
 
-      const result = await refreshTokenApiAction();
+      const result = await refreshTokenApiAction(undefined);
 
       if (result.success) {
         const token = result.data?.token;

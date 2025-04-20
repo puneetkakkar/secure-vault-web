@@ -57,7 +57,7 @@ export default function Login() {
             responseData.token
           );
 
-          router.replace("/vault");
+          router.replace("/home");
         }
       } catch (error: any) {
         addToast({
