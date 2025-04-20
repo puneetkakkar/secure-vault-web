@@ -1,11 +1,10 @@
-import NotFoundImage from "../../../assets/not-found.svg";
+import { Navbar } from "@/shared/components";
+import { Link } from "@heroui/link";
 import { link as linkStyles } from "@heroui/theme";
 import { clsx } from "clsx";
-import Image from "next/image";
-import React from "react";
-import { Navbar } from "@/shared/components";
 import { getTranslations } from "next-intl/server";
-import { Link } from "@heroui/link";
+import Image from "next/image";
+import NotFoundImage from "../../../assets/not-found.svg";
 
 export default async function NotFound() {
   const t = await getTranslations("NotFound");
@@ -32,7 +31,7 @@ export default async function NotFound() {
               className:
                 "font-josefin text-md sm:text-xl text-primary-foreground mt-4",
             }),
-            "data-[active=true]:text-primary data-[active=true]:font-medium",
+            "data-[active=true]:text-primary data-[active=true]:font-medium"
           )}
         >
           {t("return_home")}

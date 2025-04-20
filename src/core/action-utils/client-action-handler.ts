@@ -54,15 +54,15 @@ export function createClientAction<TPayload = void, TData = unknown>(
       refreshTokenInterceptor,
     ].filter((interceptor) => !skipResponseInterceptors.includes(interceptor));
 
-    // Run request interceptors
-    for (const interceptor of mergedRequestInterceptors) {
-      const result = await interceptor({ args, config });
-      args = result.args;
-      config = result.config ?? config;
-    }
-
     // Call server action with the config appended
     const callServerAction = async (): Promise<ActionResult<TData | null>> => {
+      // Run request interceptors
+      for (const interceptor of mergedRequestInterceptors) {
+        const result = await interceptor({ args, config });
+        args = result.args;
+        config = result.config ?? config;
+      }
+
       const serverActionWithHandling = createApiAction(serverAction);
       return serverActionWithHandling(...args, config);
     };

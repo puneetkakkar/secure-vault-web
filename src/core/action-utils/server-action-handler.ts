@@ -31,7 +31,7 @@ export function createApiAction<TPayload = void, TData = unknown>(
 
     // return executeHandledAction(actionLogic, [...args, requestConfig]);
 
-    return executeHandledAction(actionLogic, [
+    return executeHandledAction<[TPayload, RequestConfig], TData>(actionLogic, [
       payload ?? ({} as TPayload),
       config,
     ]);

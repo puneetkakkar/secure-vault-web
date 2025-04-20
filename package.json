@@ -23,6 +23,7 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-hook-form": "^7.51.5",
+    "set-cookie-parser": "^2.7.1",
     "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },
@@ -30,6 +31,7 @@
     "@types/node": "^20",
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
+    "@types/set-cookie-parser": "^2",
     "eslint": "^8",
     "eslint-config-next": "15.2.3",
     "eslint-config-prettier": "^9.1.0",

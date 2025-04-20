@@ -37,33 +37,8 @@ export class ApiService {
         signal: controller.signal,
       });
 
-      let responseData: any;
-      try {
-        responseData = await response.json();
-      } catch (jsonError) {
-        throw new Error(`Failed to parse JSON response`);
-      }
-
-      if (!response.ok) {
-        throw new ApiError(
-          responseData.message,
-          response.status,
-          new Date().toISOString(),
-          responseData.code,
-          responseData.errors ?? null
-        );
-      }
-
-      return {
-        data: (responseData.data ?? null) as T,
-        status: response.status,
-        message: responseData.message,
-      } as ApiResponse<T>;
+      return response as ApiResponse<T>;
     } catch (error: any) {
-      if (error instanceof ApiError) {
-        throw error;
-      }
-
       if (error instanceof Error && error.name === "AbortError") {
         throw new ApiError(
           "Request has been aborted due to timeout",
