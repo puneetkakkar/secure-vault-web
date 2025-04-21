@@ -101,13 +101,13 @@ export default function FinishRegistration() {
   }, [authService, token, email, setPageLoading]);
 
   useEffect(() => {
-    if (!email || !token) {
+    if (!email) {
       // Handle the case where email or token is not provided
       router.replace("/");
     }
 
     verifyEmail();
-  }, [token, email, router, verifyEmail]);
+  }, [email, router, verifyEmail]);
 
   useEffect(() => {
     const strength = calculatePasswordStrength(masterPassword);
@@ -130,7 +130,7 @@ export default function FinishRegistration() {
 
       if (storageService && responseData) {
         storageService.set(SessionStorageKey.ACCESS_TOKEN, responseData.token);
-        router.replace("/home");
+        router.replace("/vaults");
       }
 
       setPageLoading(false);

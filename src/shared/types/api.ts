@@ -10,6 +10,10 @@ export interface ApiErrorResponse extends Response {
   message: string;
   timestamp: string;
   errors?: Record<string, unknown>;
+  nextAction?: {
+    type: string;
+    redirectUrl: string;
+  };
 }
 
 export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
@@ -20,7 +24,11 @@ export class ApiError extends Error {
     public status: number,
     public timestamp: string,
     public code: string,
-    public errors: Record<string, unknown>
+    public errors: Record<string, unknown>,
+    public nextAction?: {
+      type: string;
+      redirectUrl: string;
+    }
   ) {
     super(message);
     this.name = "ApiError";

@@ -14,6 +14,7 @@ import Image from "next/image";
 import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
 import UserOnboardImage from "../../../../../assets/user-onboard.svg";
+import { ApiError } from "@/shared/types";
 
 export default function Register() {
   const t = useTranslations("Register");
@@ -59,7 +60,16 @@ export default function Register() {
           pathname: "/email-verification",
           query: { email: data.email, name: data.fullName },
         });
-      } catch (error: any) {
+      } catch (error: ApiError | any) {
+        if (error instanceof ApiError && error.nextAction) {
+          router.push({
+            pathname: error.nextAction.redirectUrl,
+            query: { email: data.email },
+          });
+
+          return;
+        }
+
         addToast({
           variant: "flat",
           color: "danger",

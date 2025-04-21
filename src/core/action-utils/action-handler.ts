@@ -106,7 +106,8 @@ export async function executeHandledAction<TArgs extends any[], TData>(
         serverActionResponse.status,
         new Date().toISOString(),
         serverActionResponseData.code,
-        serverActionResponseData?.errors ?? null
+        serverActionResponseData?.errors ?? null,
+        serverActionResponseData.nextAction
       );
     }
 
@@ -114,18 +115,17 @@ export async function executeHandledAction<TArgs extends any[], TData>(
       console.log(
         `${colors.green}${colors.bright}[API Response]${colors.reset} ${colors.dim}${actionFn.name}${colors.reset}`,
         {
-          data: (serverActionResponseData.data ?? null) as TData,
+          ...serverActionResponseData,
           status: serverActionResponse.status,
-          message: serverActionResponseData.message,
         }
       );
     }
 
     return {
       success: true,
+      ...serverActionResponseData,
       status: 200,
       data: (serverActionResponseData.data ?? null) as TData,
-      message: serverActionResponseData.message,
     } as ActionResult<TData>;
   } catch (error) {
     if (isApiError(error)) {
@@ -137,15 +137,14 @@ export async function executeHandledAction<TArgs extends any[], TData>(
         console.error(
           `${color}${colors.bright}[API Error]${colors.reset} ${colors.dim}${actionFn.name}${colors.reset}`,
           {
+            ...error,
             status,
-            message: error.message,
-            code: error.code,
-            errors: error.errors,
           }
         );
       }
 
       return {
+        ...error,
         success: false,
         status,
         message: error.message || "An application error occurred.",
@@ -176,6 +175,7 @@ export async function executeHandledAction<TArgs extends any[], TData>(
         message: "An unexpected error occurred.",
         code: "UNEXPECTED_RUNTIME_ERROR",
         errors: {},
+        nextAction: undefined,
       } as ActionResult<TData>;
     }
   }

@@ -24,12 +24,14 @@ export class AuthService {
     const result = await sendVerificationEmailApiAction(payload, {});
 
     if (!result.success) {
+      console.log(result);
       throw new ApiError(
         result.message,
         result.status,
         new Date().toISOString(),
         result.code,
-        result.errors
+        result.errors,
+        result.nextAction
       );
     }
 
