@@ -14,6 +14,10 @@ export type ActionResult<TData = void> =
       message: string;
       code: string;
       errors: Record<string, unknown>;
+      nextAction?: {
+        type: string;
+        redirectUrl: string;
+      };
     };
 
 export type RequestConfig = {

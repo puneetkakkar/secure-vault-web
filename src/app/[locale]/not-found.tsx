@@ -1,3 +1,5 @@
+"use server";
+
 import { Navbar } from "@/shared/components";
 import { Link } from "@heroui/link";
 import { link as linkStyles } from "@heroui/theme";
@@ -5,12 +7,19 @@ import { clsx } from "clsx";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 import NotFoundImage from "../../../assets/not-found.svg";
+import { cookies } from "next/headers";
+import { CookieKey } from "@/shared/enums";
 
 export default async function NotFound() {
   const t = await getTranslations("NotFound");
+  const token = (await cookies()).get(CookieKey.REFRESH_TOKEN);
+
   return (
     <>
-      <Navbar />
+      <Navbar
+        showAuthButtons={token ? false : true}
+        showNavLinks={token ? false : true}
+      />
       <div className="flex flex-col items-center justify-center">
         <div className="">
           <Image

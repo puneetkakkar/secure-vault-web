@@ -17,8 +17,10 @@ import { ThemeSwitch } from "./theme-switch";
 
 export default function Navbar({
   showAuthButtons = true,
+  showNavLinks = true,
 }: {
   showAuthButtons?: boolean;
+  showNavLinks?: boolean;
 }) {
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -34,22 +36,24 @@ export default function Navbar({
             </span>
           </NextLink>
         </NavbarBrand>
-        <ul className="hidden sm:flex gap-4 justify-start ml-2">
-          {siteConfig.navItems.map((item) => (
-            <NavbarItem key={item.href}>
-              <NextLink
-                className={clsx(
-                  linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium font-josefin"
-                )}
-                color="foreground"
-                href={item.href}
-              >
-                {item.label}
-              </NextLink>
-            </NavbarItem>
-          ))}
-        </ul>
+        {showNavLinks && (
+          <ul className="hidden sm:flex gap-4 justify-start ml-2">
+            {siteConfig.navItems.map((item) => (
+              <NavbarItem key={item.href}>
+                <NextLink
+                  className={clsx(
+                    linkStyles({ color: "foreground" }),
+                    "data-[active=true]:text-primary data-[active=true]:font-medium font-josefin"
+                  )}
+                  color="foreground"
+                  href={item.href}
+                >
+                  {item.label}
+                </NextLink>
+              </NavbarItem>
+            ))}
+          </ul>
+        )}
       </NavbarContent>
 
       <NavbarContent
