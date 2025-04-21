@@ -1,5 +1,3 @@
-"use client";
-
 import { LoadingPageSpinner } from "@/shared/components";
 
 export default function Loading() {

@@ -76,4 +76,10 @@ export class AuthApiService {
       config
     );
   }
+
+  async logout(
+    config?: Partial<RequestInit>
+  ): Promise<ServerActionResponse<void>> {
+    return this.apiService.get(API_ENDPOINTS.AUTH.LOGOUT, undefined, config);
+  }
 }

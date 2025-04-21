@@ -7,3 +7,4 @@ export * from "./interceptor";
 export * from "./key";
 export * from "./storage";
 export * from "./unhandled-error";
+export * from "./component";
