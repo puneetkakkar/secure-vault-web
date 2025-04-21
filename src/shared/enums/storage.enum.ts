@@ -10,4 +10,6 @@ export enum SessionStorageKey {
   ACCESS_TOKEN = "sv.atkn",
 }
 
-export enum CookieKey {}
+export enum CookieKey {
+  REFRESH_TOKEN = "sv.rftkn",
+}

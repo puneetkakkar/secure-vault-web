@@ -74,3 +74,11 @@ export async function _refreshTokenAction(
   const authApiService = serviceFactory.getAuthApiService();
   return await authApiService.refreshToken(config);
 }
+
+export async function _logoutAction(
+  payload: void,
+  config?: RequestConfig
+): Promise<ServerActionResponse<void>> {
+  const authApiService = serviceFactory.getAuthApiService();
+  return await authApiService.logout(config);
+}

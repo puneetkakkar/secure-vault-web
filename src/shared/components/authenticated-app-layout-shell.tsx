@@ -7,76 +7,34 @@ import {
   Tooltip,
 } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useRef, useState } from "react";
-import {
-  LockIcon,
-  Logo,
-  LogoutIcon,
-  SettingsIcon,
-  SidebarCloseIcon,
-  SidebarLockIcon,
-  VaultIcon,
-} from "./icons";
+import React from "react";
+import { AuthenticatedAppLayoutShellProps } from "../types";
+import { Logo, LogoutIcon, SidebarCloseIcon, SidebarLockIcon } from "./icons";
 import SidebarNavItem from "./sidebar-nav-item";
 
-interface Vault {
-  id: string | number;
-  name: string;
-  icon?: React.ReactNode;
-}
-
-interface UserProfile {
-  name: string;
-  plan: string;
-  avatarUrl?: string;
-  email?: string;
-}
-
-interface DashboardLayoutProps {
-  user?: UserProfile;
-  vaults?: Vault[];
-  children: React.ReactNode;
-}
-
-const DashboardLayout: React.FC<DashboardLayoutProps> = ({
-  user = {
-    name: "John Doe",
-    email: "john@example.com",
-    plan: "Free",
-    avatarUrl: "https://i.pravatar.cc/150?img=3",
-  },
-  vaults = [
-    { id: 1, name: "Personal", icon: <LockIcon /> },
-    { id: 2, name: "Work", icon: <LockIcon /> },
-    { id: 3, name: "Finance", icon: <LockIcon /> },
-  ],
+const AuthenticatedAppLayoutShell: React.FC<
+  AuthenticatedAppLayoutShellProps
+> = ({
+  sidebarRef,
+  user,
+  vaults = [],
+  navItems = [],
+  isSidebarPinned,
+  onToggleSidebarPin,
+  onLogout,
   children,
 }) => {
-  // State for sidebar behavior
-  const [isPinned, setIsPinned] = useState(false);
-
-  const sidebarRef = useRef<HTMLDivElement>(null);
-
-  const togglePin = () => {
-    setIsPinned(!isPinned);
-  };
-
-  const navItems = [
-    { icon: <VaultIcon />, label: "Vaults", active: true },
-    { icon: <SettingsIcon />, label: "Settings", active: false },
-  ];
-
   return (
     <div className="flex h-screen bg-black text-white overflow-hidden">
       {/* Desktop Sidebar */}
       <motion.aside
         ref={sidebarRef}
         initial={false}
-        animate={{ width: isPinned ? 208 : 64 }}
+        animate={{ width: isSidebarPinned ? 208 : 64 }}
         transition={{
           duration: 0.1,
         }}
-        className={`group/sidebar h-full flex flex-col overflow-x-hidden bg-gradient-to-b from-black/20 to-black/20 border-r border-violet-800/20 z-30 transition-all duration-200 ${isPinned ? "w-64 min-w-[13rem]" : "w-16 min-w-[4rem]"}`}
+        className={`group/sidebar h-full flex flex-col overflow-x-hidden bg-gradient-to-b from-black/20 to-black/20 border-r border-violet-800/20 z-30 transition-all duration-200 ${isSidebarPinned ? "w-64 min-w-[13rem]" : "w-16 min-w-[4rem]"}`}
       >
         {/* Logo & Title Section */}
         <div className="sticky top-0 z-20 w-full backdrop-blur-md bg-black/80 flex items-center justify-between px-4 py-4">
@@ -101,7 +59,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             }}
             className="flex items-center justify-center font-josefin font-bold text-md"
           >
-            {!isPinned && (
+            {!isSidebarPinned && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -113,7 +71,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </motion.div>
             )}
 
-            {isPinned && (
+            {isSidebarPinned && (
               <motion.div
                 initial={{ opacity: 0, x: -2 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -130,17 +88,17 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               </motion.div>
             )}
 
-            {isPinned && (
+            {isSidebarPinned && (
               <Tooltip content="Unpin Sidebar" placement="right">
                 <motion.button
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.2, delay: 0.1, ease: "easeInOut" }}
-                  onClick={togglePin}
+                  onClick={onToggleSidebarPin}
                   className="ml-4 mt-1 md:mt-0 rounded-full hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
                 >
-                  {isPinned ? (
+                  {isSidebarPinned ? (
                     <SidebarLockIcon width={20} height={20} />
                   ) : (
                     <SidebarCloseIcon width={20} height={20} />
@@ -159,7 +117,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 key={index}
                 icon={item.icon}
                 label={item.label}
-                expanded={isPinned}
+                expanded={isSidebarPinned}
                 active={item.active}
                 onClick={() => console.log(`Clicked ${item.label}`)}
               />
@@ -168,7 +126,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
           {/* Vaults Section */}
           <AnimatePresence>
-            {isPinned && (
+            {isSidebarPinned && (
               <motion.div
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -214,13 +172,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         </div>
 
         {/* Pin Button */}
-        {!isPinned && (
+        {!isSidebarPinned && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.2, delay: 0.1, ease: "easeInOut" }}
-            onClick={togglePin}
+            onClick={onToggleSidebarPin}
             className="flex items-center justify-center py-1"
           >
             <Tooltip content="Open Sidebar" placement="right">
@@ -228,9 +186,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 aria-label="Open Sidebar"
                 variant="light"
                 isIconOnly
-                onPress={togglePin}
+                onPress={onToggleSidebarPin}
               >
-                {isPinned ? (
+                {isSidebarPinned ? (
                   <SidebarLockIcon width={20} height={20} />
                 ) : (
                   <SidebarCloseIcon width={20} height={20} />
@@ -241,7 +199,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
         )}
 
         {/* Logout Button */}
-        {!isPinned && (
+        {!isSidebarPinned && (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -253,7 +211,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
               <Button
                 aria-label="Logout"
                 className="rounded-full text-gray-400 hover:text-white hover:bg-gray-600/30 transition-colors"
-                onPress={() => console.log("Logout clicked")}
+                onPress={onLogout}
                 variant="light"
                 isIconOnly
               >
@@ -275,14 +233,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
           >
             <Avatar
               size="md"
-              src={user.avatarUrl}
+              src={user?.avatarUrl}
               showFallback
               isBordered
               color="default"
             />
           </motion.div>
 
-          {isPinned && (
+          {isSidebarPinned && (
             <>
               <motion.div
                 initial={{ opacity: 0, x: -5 }}
@@ -292,7 +250,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 className="flex flex-col justify-center ml-3 overflow-hidden w-2/3 "
               >
                 <span className="font-medium text-sm truncate">
-                  {user.name}
+                  {user?.name}
                 </span>
                 <span className="text-xs text-gray-400 truncate">
                   Premium User
@@ -310,7 +268,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                   <Button
                     aria-label="Logout"
                     className="rounded-full text-gray-400 hover:text-white hover:bg-gray-600/30 transition-colors"
-                    onPress={() => console.log("Logout clicked")}
+                    onPress={onLogout}
                     variant="light"
                     isIconOnly
                   >
@@ -335,4 +293,4 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   );
 };
 
-export default DashboardLayout;
+export default AuthenticatedAppLayoutShell;

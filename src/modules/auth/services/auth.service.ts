@@ -1,15 +1,16 @@
 "use client";
 
 import { PBKDF2Config } from "@/core/config/pbkdf";
-import { serviceFactory } from "@/shared/services/service-factory";
 import { CryptoService } from "@/shared/abstractions";
 import { PBKDF2_ITERATIONS } from "@/shared/enums";
+import { serviceFactory } from "@/shared/services/service-factory";
 import { ApiError } from "@/shared/types/api";
+import { logoutApiAction } from "../actions";
 import {
-	finishRegistrationApiAction,
-	loginApiAction,
-	sendVerificationEmailApiAction,
-	verifyEmailApiAction,
+  finishRegistrationApiAction,
+  loginApiAction,
+  sendVerificationEmailApiAction,
+  verifyEmailApiAction,
 } from "../actions/server/auth.action";
 
 export class AuthService {
@@ -124,6 +125,22 @@ export class AuthService {
     };
 
     const result = await loginApiAction(loginRequestPayload, {});
+
+    if (!result.success) {
+      throw new ApiError(
+        result.message,
+        result.status,
+        new Date().toISOString(),
+        result.code,
+        result.errors
+      );
+    }
+
+    return result;
+  }
+
+  async logout() {
+    const result = await logoutApiAction();
 
     if (!result.success) {
       throw new ApiError(
