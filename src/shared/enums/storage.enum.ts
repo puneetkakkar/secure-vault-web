@@ -1,7 +1,6 @@
 export enum StorageType {
   LOCAL = "localStorage",
   SESSION = "sessionStorage",
-  COOKIE = "cookie",
 }
 
 export enum LocalStorageKey {}

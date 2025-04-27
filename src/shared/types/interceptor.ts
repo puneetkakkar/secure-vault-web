@@ -16,6 +16,6 @@ export type ResponseInterceptorWithRetryContext<TData> = (
   response: ActionResult<TData>,
   retryContext?: {
     retry: () => Promise<ActionResult<TData>>;
-    name: string;
+    metadata?: { isRefreshTokenRequest?: boolean };
   }
 ) => Promise<ActionResult<TData>>;
