@@ -48,17 +48,7 @@ export default function AuthenticatedAppLayoutContainer({
   const handleOnLogout = async () => {
     startLogoutTransition(async () => {
       try {
-        const response = await authService.logout();
-
-        if (response.success) {
-          if (storageService) {
-            storageService.remove(SessionStorageKey.ACCESS_TOKEN);
-          } else {
-            console.error("Storage service not found");
-          }
-
-          router.replace("/login");
-        }
+        await authService.logout();
       } catch (error: any) {
         addToast({
           variant: "flat",
@@ -66,6 +56,8 @@ export default function AuthenticatedAppLayoutContainer({
           title: error.message,
         });
       }
+
+      router.replace("/login");
     });
   };
 

@@ -1,5 +1,3 @@
-"use client";
-
 import { PBKDF2Config } from "@/core/config/pbkdf";
 import { CryptoService } from "@/shared/abstractions";
 import { PBKDF2_ITERATIONS } from "@/shared/enums";
@@ -12,6 +10,7 @@ import {
   sendVerificationEmailApiAction,
   verifyEmailApiAction,
 } from "../actions/server/auth.action";
+import ClientServiceFactory from "@/shared/services/client-service-factory";
 
 export class AuthService {
   private cryptoService: CryptoService;
@@ -142,6 +141,8 @@ export class AuthService {
 
   async logout() {
     const result = await logoutApiAction();
+
+    ClientServiceFactory.getInstance().getSessionStorageService()?.clear();
 
     if (!result.success) {
       throw new ApiError(

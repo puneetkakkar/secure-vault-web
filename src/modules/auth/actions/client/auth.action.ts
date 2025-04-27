@@ -1,5 +1,8 @@
 import { createClientAction } from "@/core/action-utils/client-action-handler";
-import { bearerTokenInterceptor } from "@/shared/interceptors";
+import {
+  bearerTokenInterceptor,
+  refreshTokenInterceptor,
+} from "@/shared/interceptors";
 import { _logoutAction, _refreshTokenAction } from "../server/auth.action";
 
 export type RefreshTokenResponse = {
@@ -11,4 +14,6 @@ export const refreshTokenApiAction = createClientAction<
   RefreshTokenResponse
 >(_refreshTokenAction, { skipRequestInterceptors: [bearerTokenInterceptor] });
 
-export const logoutApiAction = createClientAction<void, void>(_logoutAction);
+export const logoutApiAction = createClientAction<void, void>(_logoutAction, {
+  skipResponseInterceptors: [refreshTokenInterceptor],
+});

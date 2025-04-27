@@ -35,11 +35,4 @@ export default class ClientServiceFactory {
     }
     return this.sessionStorageService;
   }
-
-  getCookieStorageService(): StorageService | null {
-    if (this.isClient && !this.cookieStorageService) {
-      this.cookieStorageService = new WebStorageService(StorageType.COOKIE);
-    }
-    return this.cookieStorageService;
-  }
 }

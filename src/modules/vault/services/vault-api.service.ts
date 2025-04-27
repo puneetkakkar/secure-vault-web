@@ -14,12 +14,3 @@ export class VaultApiService {
     return this.apiService.get(API_ENDPOINTS.USER.INFO, undefined, config);
   }
 }
-
-// return {
-//   status: 200,
-//   message: "User info retrieved successfully",
-//   data: {
-//     name: "John Doe",
-//     email: "john.doe@example.com",
-//   },
-// };

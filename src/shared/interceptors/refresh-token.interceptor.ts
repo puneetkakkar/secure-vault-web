@@ -5,6 +5,7 @@ import { SessionStorageKey } from "@/shared/enums";
 import ClientServiceFactory from "@/shared/services/client-service-factory";
 import { ActionResult } from "@/shared/types/action";
 import { ResponseInterceptorWithRetryContext } from "@/shared/types/interceptor";
+import { serviceFactory } from "../services";
 
 export const refreshTokenInterceptor: ResponseInterceptorWithRetryContext<
   any
@@ -13,11 +14,11 @@ export const refreshTokenInterceptor: ResponseInterceptorWithRetryContext<
     return response;
   }
 
-  if (retryContext?.name === "_refreshTokenAction") {
-    if (typeof window !== "undefined") {
-      window.location.href = "/login";
-    }
+  const clientService = ClientServiceFactory.getInstance();
+  const sessionStorageService = clientService.getSessionStorageService();
+  const authService = serviceFactory.getAuthService();
 
+  if (retryContext.metadata?.isRefreshTokenRequest) {
     return {
       success: false,
       status: 401,
@@ -29,36 +30,29 @@ export const refreshTokenInterceptor: ResponseInterceptorWithRetryContext<
 
   if (!response.success && response.status === 401) {
     try {
-      const clientService = ClientServiceFactory.getInstance();
-      const sessionStorageService = clientService.getSessionStorageService();
+      const result = await refreshTokenApiAction(undefined, {
+        metadata: { isRefreshTokenRequest: true },
+      });
 
       if (!sessionStorageService) {
         throw new Error("Session storage service not found");
       }
 
-      const result = await refreshTokenApiAction(undefined);
-
       if (result.success) {
-        const token = result.data?.token;
+        const token = result.data?.token ?? "";
         sessionStorageService.set(SessionStorageKey.ACCESS_TOKEN, token);
+
+        return await retryContext?.retry();
       } else {
-        if (typeof window !== "undefined") {
-          window.location.href = "/login";
-        }
+        throw new Error(result.message);
       }
-
-      return await retryContext?.retry();
-    } catch (error) {
-      console.error("[Refresh Token Interceptor] Token refresh failed", error);
-
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
+    } catch (error: any) {
+      await authService.logout();
 
       return {
         success: false,
         status: 500,
-        message: "Failed to refresh token",
+        message: error.message,
         code: "TOKEN_REFRESH_FAILED",
         errors: {},
       };
