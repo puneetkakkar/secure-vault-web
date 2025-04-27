@@ -18,7 +18,7 @@ export default async function AuthenticatedLayout({
 
   setRequestLocale(locale);
 
-  if (!token) {
+  if (!token || token.value === "") {
     redirect("/login");
   }
 

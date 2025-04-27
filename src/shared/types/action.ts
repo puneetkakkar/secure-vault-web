@@ -30,6 +30,13 @@ export type RequestConfig = {
    * Optional timeout for the action
    */
   timeout?: number;
+
+  /**
+   * Optional query parameters to be sent with the request
+   */
+  metadata?: {
+    isRefreshTokenRequest?: boolean;
+  };
 };
 
 // type ServerActionError = ApiError ;

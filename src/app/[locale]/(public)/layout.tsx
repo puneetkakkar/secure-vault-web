@@ -12,7 +12,7 @@ export default async function PublicLayout({
 }) {
   const token = (await cookies()).get(CookieKey.REFRESH_TOKEN);
 
-  if (token) {
+  if (token && token.value !== "") {
     redirect("/vaults");
   }
 

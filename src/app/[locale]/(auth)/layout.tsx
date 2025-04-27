@@ -18,7 +18,7 @@ export default async function AuthLayout({
 
   setRequestLocale(locale);
 
-  if (token) {
+  if (token && token.value !== "") {
     redirect("/vaults");
   }
 

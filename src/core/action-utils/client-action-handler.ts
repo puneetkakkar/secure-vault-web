@@ -73,7 +73,7 @@ export function createClientAction<TPayload = void, TData = unknown>(
     for (const interceptor of mergedResponseInterceptors) {
       result = await interceptor(result, {
         retry: callServerAction,
-        name: serverAction.name,
+        metadata: config.metadata,
       });
     }
 
