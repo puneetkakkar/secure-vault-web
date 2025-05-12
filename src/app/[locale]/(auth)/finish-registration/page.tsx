@@ -120,6 +120,8 @@ export default function FinishRegistration() {
 
   const loginUser = async (data: FinishRegistrationFormData) => {
     try {
+      console.log("Login user with data: ", data);
+
       const response = await authService.login({
         email: email!,
         masterPassword: data.masterPassword,
@@ -145,7 +147,7 @@ export default function FinishRegistration() {
     }
   };
 
-  const onSubmit = async (data: FinishRegistrationFormData) => {
+  const onHandleSubmit = async (data: FinishRegistrationFormData) => {
     if (!email) {
       addToast({
         title: t("emailRequired"),
@@ -209,7 +211,7 @@ export default function FinishRegistration() {
         </p>
 
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onHandleSubmit)}
           className="my-6 space-y-4 transition-all duration-300"
         >
           <Controller
